@@ -1,9 +1,8 @@
-var express = require('express')
-var app = express()
-var mongoose = require('mongoose')
-var bodyParser = require('body-parser')
+const express = require('express')
+const app = express()
+const mongoose = require('mongoose')
 
-var book = require('./models/BookModel')
+const book = require('./models/BookModel')
 
 mongoose.connect('mongodb+srv://MuhammadAhmad_:v0qe18fEhI3Ilre9@e-commercedb.qlmze8a.mongodb.net/?retryWrites=true&w=majority')
   .then(() => {
@@ -38,3 +37,19 @@ app.get('/books/title/:title', (req, resp, next) => {
             resp.status(404).send("No book found with title: " + title);
         })
 })
+
+app.get('/books/discount', (req, resp) => {
+    book.find({discount:{$gt:0}}).then((data) => {
+        resp.send(data)
+    }).catch(err => {
+        console.log('Failed to fetch data')
+    })
+})
+app.get('/books/isbn/:isbn', (req, resp) => {
+    book.find({ISBN:req.params.isbn}).then((data) => {
+        resp.send(data)
+    }).catch(err => {
+        console.log('Failed to fetch data')
+    })
+})
+
