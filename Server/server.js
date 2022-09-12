@@ -38,7 +38,7 @@ app.get("/books/category/:category", (req, resp) => {
     book
         .find({ category: category })
         .then((specificCategory) => {
-            if (data.length == 0) throw err;
+            if (specificCategory.length == 0) throw err;
             resp.send(specificCategory);
         })
         .catch(() => {
@@ -111,7 +111,7 @@ app.get("/books/id/:id", (req, resp) => {
     book
         .findById(id)
         .then((singleBook) => {
-            if (data.length == 0) throw err;
+            if (singleBook.length == 0) throw err;
             resp.send(singleBook);
         })
         .catch(() => {
