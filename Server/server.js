@@ -3,6 +3,7 @@ const app = express()
 const mongoose = require('mongoose')
 
 const book = require('./models/BookModel')
+
 const { response } = require('express')
 
 mongoose.connect('mongodb+srv://MuhammadAhmad_:v0qe18fEhI3Ilre9@e-commercedb.qlmze8a.mongodb.net/?retryWrites=true&w=majority')
@@ -63,5 +64,15 @@ app.get('/books/isbn/:isbn', (req, resp) => {
     }).catch(err => {
         console.log('Failed to fetch data')
     })
+})
+
+app.get('/books/:id',(requst,response)=>{
+ let id=requst.params.id;
+   book.findById(id).then((singleBook)=>{
+       response.send(singleBook);
+   }).catch(()=>{
+    console.log('Not found id for book');
+   })
+
 })
 
