@@ -36,7 +36,7 @@ app.get("/books", (req, resp) => {
 app.get("/books/category/:category", (req, resp) => {
     let category = req.params.category;
     book
-        .find({ category: category })
+        .find({ category: { $regex: new RegExp(category, "i") } })
         .then((specificCategory) => {
             if (specificCategory.length == 0) throw err;
             resp.send(specificCategory);
