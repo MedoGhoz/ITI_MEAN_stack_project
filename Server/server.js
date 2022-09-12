@@ -15,14 +15,18 @@ mongoose
         console.log("Database Connection failed!");
     });
 
-app.listen(8081, function () {
-    console.log("server is listening on port 8081...");
+app.listen(4000, function () {
+    console.log("server is listening on port 4000...");
 });
 
 // get all books
 app.get("/books", (req, resp) => {
+    let limit = req.query.limit;
+    let skip = (req.query.page - 1) * limit;
     book
         .find()
+        .limit(limit)
+        .skip(skip)
         .then((data) => {
             if (data.length == 0) throw err;
             resp.send(data);
@@ -35,8 +39,12 @@ app.get("/books", (req, resp) => {
 // get book by category
 app.get("/books/category/:category", (req, resp) => {
     let category = req.params.category;
+    let limit = req.query.limit;
+    let skip = (req.query.page - 1) * limit;
     book
         .find({ category: { $regex: new RegExp(category, "i") } })
+        .limit(limit)
+        .skip(skip)
         .then((specificCategory) => {
             if (specificCategory.length == 0) throw err;
             resp.send(specificCategory);
@@ -49,9 +57,13 @@ app.get("/books/category/:category", (req, resp) => {
 // get books by title
 app.get("/books/title/:title", (req, resp) => {
     let title = req.params.title;
+    let limit = req.query.limit;
+    let skip = (req.query.page - 1) * limit;
     title = title.replace(/-/g, " ");
     book
         .find({ title: { $regex: new RegExp(".*" + title + ".*", "i") } })
+        .limit(limit)
+        .skip(skip)
         .then((data) => {
             if (data.length == 0) throw err;
             resp.send(data);
@@ -63,8 +75,8 @@ app.get("/books/title/:title", (req, resp) => {
 
 // get best-sellers
 app.get("/books/best-sellers", (req, resp) => {
-    var limit = req.query.limit;
-    var skip = (req.query.page - 1) * limit;
+    let limit = req.query.limit;
+    let skip = (req.query.page - 1) * limit;
     book
         .find()
         .sort({ sellCount: -1 })
@@ -81,8 +93,12 @@ app.get("/books/best-sellers", (req, resp) => {
 
 // get books by discount
 app.get("/books/discount", (req, resp) => {
+    let limit = req.query.limit;
+    let skip = (req.query.page - 1) * limit;
     book
-        .find({ discount: { $gt: 0 } })
+        .find({ discount: { $ne: 0 } })
+        .limit(limit)
+        .skip(skip)
         .then((data) => {
             if (data.length == 0) throw err;
             resp.send(data);
