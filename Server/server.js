@@ -1,8 +1,13 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
 const book = require("./models/BookModel");
+const user = require('./models/userModel');
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 mongoose
     .connect(
@@ -134,3 +139,34 @@ app.get("/books/id/:id", (req, resp) => {
             resp.status(404).send("Failed to fetch data");
         });
 });
+
+// Add register user
+app.post('/register', (req, resp, next) => {
+    let email = req.body.email
+    user.find({ "email": email }).then((data) => {
+        if (data) throw err;   
+    }).catch(() => {
+    resp.status(409).send("Email already exists");
+})
+
+    bcrypt.hash(req.body.password, 10, function(err, hashedPass){
+        if (err) {
+            resp.status(500).send("Cannot encrypt password");
+        }
+        let User = new user({
+        email: req.body.email,
+        password: hashedPass,
+        name: req.body.name,
+        gender: req.body.gender,
+        "credit": 100,
+        "cart": [],
+        "books":[]
+    })
+    User.save().then(User => {
+        resp.json({
+                message: "User saved successfully!"
+            }). catch(err => {resp.send(err)})
+    })
+    })
+    
+})
