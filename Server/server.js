@@ -47,6 +47,7 @@ app.get('/books/title/:title', (req, resp, next) => {
         })
 })
 
+// get books by discount
 app.get('/books/discount', (req, resp) => {
     book.find({discount:{$gt:0}}).then((data) => {
         resp.send(data)
@@ -54,6 +55,8 @@ app.get('/books/discount', (req, resp) => {
         console.log('Failed to fetch data')
     })
 })
+
+// get books by isbn
 app.get('/books/isbn/:isbn', (req, resp) => {
     book.find({ISBN:req.params.isbn}).then((data) => {
         resp.send(data)
