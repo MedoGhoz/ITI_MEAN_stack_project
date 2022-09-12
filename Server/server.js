@@ -17,6 +17,7 @@ app.listen(8081, function () {
   console.log('server is listening on port 8081...')
 })
 
+// get all books 
 app.get('/books', (req, resp) => {
     book.find().then((data) => {
         resp.send(data)
@@ -25,3 +26,15 @@ app.get('/books', (req, resp) => {
     })
 })
 
+// get books by title
+app.get('/books/title/:title', (req, resp, next) => {
+    let title = req.params.title
+    title = title.replace(/-/g, ' ')
+    book.find({ "title": { $regex: new RegExp(".*" + title + ".*", "i") } })
+        .then((data) => {
+        if (data.length == 0) throw err;
+        resp.send(data)
+        }).catch(() => {
+            resp.status(404).send("No book found with title: " + title);
+        })
+})
