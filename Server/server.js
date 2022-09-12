@@ -143,30 +143,65 @@ app.get("/books/id/:id", (req, resp) => {
 // Add register user
 app.post('/register', (req, resp, next) => {
     let email = req.body.email
-    user.find({ "email": email }).then((data) => {
-        if (data) throw err;   
+    user.find({ email: email }).then((data) => {
+        if (data.length != 0) throw err;   
+        bcrypt.hash(req.body.password, 10, function(err, hashedPass){
+            if (err) {
+                resp.status(500).send("Cannot encrypt password");
+            }
+            let User = new user({
+            email: req.body.email,
+            password: hashedPass,
+            name: req.body.name,
+            gender: req.body.gender,
+            "credit": 100,
+            "cart": [],
+            "books":[]
+             })
+            User.save()
+            .then(User => {
+                resp.json({
+                        message: "User saved successfully!"
+                })
+            })
+            .catch(err => {
+                resp.send(err)
+            })
+        })  
     }).catch(() => {
     resp.status(409).send("Email already exists");
 })
 
-    bcrypt.hash(req.body.password, 10, function(err, hashedPass){
-        if (err) {
-            resp.status(500).send("Cannot encrypt password");
+})
+
+app.post('/login', (req, resp, next) =>{
+    const userEmail = req.body.email;
+    const password = req.body.password;
+
+    user.findOne({email: userEmail})
+    .then((user) => {
+        if(user){
+            bcrypt.compare(password, user.password, (err, result) => {
+                if(err){
+                    resp.json({
+                        error: err
+                    })
+                }else if(result){
+                    let token = jwt.sign({id: user._id},'secret',{expiresIn:'1h'})
+                    resp.json({
+                        message: "logged in successfully",
+                        token
+                    })
+                }else{
+                    resp.json({
+                        message: "Cannot generate token"
+                    })
+                }
+            });
+        }else{
+            resp.json({
+                message: "User not found"
+            })
         }
-        let User = new user({
-        email: req.body.email,
-        password: hashedPass,
-        name: req.body.name,
-        gender: req.body.gender,
-        "credit": 100,
-        "cart": [],
-        "books":[]
     })
-    User.save().then(User => {
-        resp.json({
-                message: "User saved successfully!"
-            }). catch(err => {resp.send(err)})
-    })
-    })
-    
 })

@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
     "password": String,
     "name": String,
     "gender": String,
-    "credit": Number,
+    "credit": {"type": Number, "required": false},
     "cart": [{
         "bookId": {"type": String, "required": false},
         "price": {"type": Number, "required": false}
