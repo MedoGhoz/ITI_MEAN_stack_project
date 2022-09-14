@@ -8,7 +8,7 @@ const user = require('./models/userModel');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
+//;;;
 mongoose
     .connect(
         "mongodb+srv://MuhammadAhmad_:v0qe18fEhI3Ilre9@e-commercedb.qlmze8a.mongodb.net/?retryWrites=true&w=majority"
