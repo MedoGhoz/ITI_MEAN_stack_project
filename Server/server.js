@@ -54,7 +54,9 @@ app.get("/books", (req, resp) => {
             resp.send(data);
         })
         .catch((err) => {
-            resp.status(404).send("Failed to fetch data");
+            resp.status(404).json({
+                error: "Failed to fetch data"
+            });
         });
 });
 
@@ -72,7 +74,9 @@ app.get("/books/category/:category", (req, resp) => {
             resp.send(specificCategory);
         })
         .catch(() => {
-            resp.status(404).send("Failed to fetch data");
+            resp.status(404).json({
+                error:"Failed to fetch data"
+            });
         });
 });
 
@@ -91,7 +95,9 @@ app.get("/books/title/:title", (req, resp) => {
             resp.send(data);
         })
         .catch(() => {
-            resp.status(404).send("Failed to fetch data");
+            resp.status(404).json({
+                error: "Failed to fetch data"
+            });
         });
 });
 
@@ -109,7 +115,9 @@ app.get("/books/best-sellers", (req, resp) => {
             resp.send(data);
         })
         .catch(() => {
-            resp.status(404).send("Failed to fetch data");
+            resp.status(404).json({
+                error: "Failed to fetch data"
+            });
         });
 });
 
@@ -126,7 +134,9 @@ app.get("/books/discount", (req, resp) => {
             resp.send(data);
         })
         .catch((err) => {
-            resp.status(404).send("Failed to fetch data");
+            resp.status(404).json({
+                error: "Failed to fetch data"
+            });
         });
 });
 
@@ -139,7 +149,9 @@ app.get("/books/isbn/:isbn", (req, resp) => {
             resp.send(data);
         })
         .catch((err) => {
-            resp.status(404).send("Failed to fetch data");
+            resp.status(404).json({
+                error: "Failed to fetch data"
+            });
         });
 });
 
@@ -153,7 +165,9 @@ app.get("/books/id/:id", (req, resp) => {
             resp.send(singleBook);
         })
         .catch(() => {
-            resp.status(404).send("Failed to fetch data");
+            resp.status(404).json({
+                error: "Failed to fetch data"
+            });
         });
 });
 
@@ -164,7 +178,9 @@ app.post('/register', (req, resp, next) => {
         if (data.length != 0) throw err;   
         bcrypt.hash(req.body.password, 10, function(err, hashedPass){
             if (err) {
-                resp.status(500).send("Cannot encrypt password");
+                resp.status(500).json({
+                    error: "Cannot encrypt password"
+                });
             }
             let User = new user({
             email: req.body.email,
@@ -182,11 +198,15 @@ app.post('/register', (req, resp, next) => {
                 })
             })
             .catch(err => {
-                resp.send(err)
+                resp.status(500).json({
+                    error: "Cannot add new user"
+                })
             })
         })  
     }).catch(() => {
-    resp.status(409).send("Email already exists");
+         resp.status(409).json({
+            error: "Email already exists"
+        });
 })
 
 })
@@ -206,6 +226,7 @@ app.post('/login', (req, resp, next) =>{
                 }else if(result){
                     let token = jwt.sign({id: user._id},'secret',{expiresIn:'1h'})
                     resp.json({
+                        name: user.name,
                         message: "logged in successfully",
                         token
                     })
