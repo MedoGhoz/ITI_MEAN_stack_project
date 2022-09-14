@@ -24,6 +24,23 @@ app.listen(4000, function () {
     console.log("server is listening on port 4000...");
 });
 
+// Authorization
+function authenticateToken(req, resp, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) return resp.status(401).json({
+        error: "Unauthorized user"
+    })
+
+    jwt.verify(token, 'secret', (err, data) => {
+        if (err) return resp.status(403).json({
+            error : "access token is not valid"
+        }) 
+        req.id = data.id;
+        next()
+    })
+}
+
 // get all books
 app.get("/books", (req, resp) => {
     let limit = req.query.limit;
@@ -64,7 +81,7 @@ app.get("/books/title/:title", (req, resp) => {
     let title = req.params.title;
     let limit = req.query.limit;
     let skip = (req.query.page - 1) * limit;
-    title = title.replace(/-/g, " ");
+    title = title.replaceAll('+', " ");
     book
         .find({ title: { $regex: new RegExp(".*" + title + ".*", "i") } })
         .limit(limit)
@@ -203,5 +220,14 @@ app.post('/login', (req, resp, next) =>{
                 message: "User not found"
             })
         }
+    })
+})
+
+app.post('/test', authenticateToken, (req, resp) => {
+    console.log(req.id);
+    user.findById(req.id).then((data) => {
+        resp.send(data)
+    }).catch(() => {
+        resp.send("No data")
     })
 })
