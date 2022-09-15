@@ -1,0 +1,86 @@
+<nav class="navbar navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home">
+      <i class="fa fa-book" aria-hidden="true"></i> OurWebsiteName</a>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/hot">Hot</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/most-selling">Most Selling</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/category/fiction">Fiction</a></li>
+            <li><a class="dropdown-item" href="/category/arts">Arts</a></li>
+            <li><a class="dropdown-item" href="/category/medicine">Medicine</a></li>
+            <li><a class="dropdown-item" href="/category/science">Science</a></li>
+            <li><a class="dropdown-item" href="/category/computer">Computer</a></li>
+            <li><a class="dropdown-item" href="/category/marketing">Marketing</a></li>
+            <li><a class="dropdown-item" href="/category/bussiness">Business</a></li>
+            <li><a class="dropdown-item" href="/category/novels">Novels</a></li>
+            <li><a class="dropdown-item" href="/category/drama">Drama</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
+    </nav>
+    <ul class="nav  navbar-right">
+      <li>
+        <i class="bi bi-cart2"></i>
+      </li>
+      <li>
+        <div class="btn-nav">
+          <button type="button" class="btn btn-light position-relative">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              12
+            </span>
+          </button>
+        </div>
+      </li>
+      <li>
+        <p>test</p>
+      </li>
+      <li>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+          aria-controls="offcanvasDarkNavbar">
+          <span class="navbar-toggler-icon"></span>
+          Profile</button>
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+          aria-labelledby="offcanvasDarkNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">User Name</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+              aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/mybooks">My Books</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/account">Account settings</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Sign out</a>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
