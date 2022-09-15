@@ -27,22 +27,24 @@ export class CategorypageComponent implements OnInit,OnChanges {
   }
 
   ngOnInit(): void {
-    console.log("initialize");
-    this.categoryName = this.route.snapshot.paramMap.get("cat");
-    this.categorypage.getBooks(this.categoryName,this.currentPage,5).subscribe({
-      next: (BooksData) => {
-        console.log(BooksData);
-        this.Books=BooksData;
-        this.FilteredBooks = this.Books.filter(
-          (element)=>{
-          if(element.category==this.categoryName) return element;
-        }
-        );
-      }
-    });
+    this.update();
   }
 
-
+ update():void{
+  this.categoryName = this.route.snapshot.paramMap.get("cat");
+  this.categorypage.getBooks(this.categoryName,this.currentPage,5).subscribe({
+    next: (BooksData) => {
+      console.log(BooksData);
+      this.Books=BooksData;
+      // this.FilteredBooks = this.Books.filter(
+      //   (element)=>{
+      //   if(element.category==this.categoryName) return element;
+      //   el
+      // }
+      // );
+    }
+  });
+ }
 
   changePage(pageData:PageEvent){
     console.log("pageEvent");
@@ -56,7 +58,7 @@ export class CategorypageComponent implements OnInit,OnChanges {
         
       },
     });
-    this.ngOnInit();
+    this.update();
   }
 
 
