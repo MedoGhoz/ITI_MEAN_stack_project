@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors")
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
@@ -8,6 +9,7 @@ const user = require('./models/userModel');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 mongoose
     .connect(

@@ -9,8 +9,16 @@ export class BooksService {
 
   constructor(private http: HttpClient) { }
 
-  getBookDetails(bookId:string,):Observable<any>{
-    return this.http.get(`https://api.themoviedb.org/3/tv/${bookId}`);
-}
+  getBookById(bookId:string):Observable<any>{
+    return this.http.get(`http://localhost:4000/books/id/${bookId}`);
+  }
+
+  getBookByISBN(ISBN:Number):Observable<any>{
+    return this.http.get(`http://localhost:4000/books/isbn/${ISBN}`);
+  }
+
+  getRelatedBooks(category:string, limit:number):Observable<any>{
+    return this.http.get(`http://localhost:4000/books/category/${category}/?limit=${limit}&page=1`);
+  }
 
 }
