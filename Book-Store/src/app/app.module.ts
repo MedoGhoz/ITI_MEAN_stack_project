@@ -5,7 +5,6 @@ import {HttpClientModule} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CategorypageComponent } from './categorypage/categorypage.component';
-import { HttpClientModule } from '@angular/common/http';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { StarComponent } from './star/star.component';
 import { HeaderComponent } from './header/header.component';

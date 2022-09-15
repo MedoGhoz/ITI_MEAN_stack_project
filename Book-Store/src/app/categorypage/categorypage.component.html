@@ -1,7 +1,9 @@
 <div class="categorylineBackground"><h1 class="categoryline">Welcome to <strong class="category">{{categoryName}}</strong></h1></div>
 <div class="row" >
 <div class="card" style="width: 18rem;" *ngFor="let book of Books">
+  <a  [routerLink]="['/books/isbn', book.ISBN]">
     <img class="card-img-top" src={{book.image}} alt="Card image cap" >
+    </a>
     <div class="card-body">
       <h5 class="card-title">{{book.title}}</h5>
       <app-star [width]='book.rating.average'></app-star>
@@ -12,8 +14,8 @@
 </div>
 
 <mat-paginator
-    [length]="20"
-    [pageSize]="5"
+    [length]="16"
+    [pageSize]="8"
     aria-label="Select page"
     (page)="changePage($event)"
   >

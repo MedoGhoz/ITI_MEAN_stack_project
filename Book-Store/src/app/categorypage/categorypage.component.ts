@@ -1,9 +1,9 @@
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CategorypageService } from '../categorypage.service';
 import {Ibook} from '../../../books';
 import { PageEvent } from '@angular/material/paginator';
+import { BooksService } from '../books.service';
 
 
 
@@ -22,7 +22,7 @@ export class CategorypageComponent implements OnInit,OnChanges {
 
 
 
-  constructor(private categorypage: CategorypageService,private route:ActivatedRoute) { 
+  constructor(private categorypage: BooksService,private route:ActivatedRoute) { 
 
   }
 
@@ -32,7 +32,7 @@ export class CategorypageComponent implements OnInit,OnChanges {
 
  update():void{
   this.categoryName = this.route.snapshot.paramMap.get("cat");
-  this.categorypage.getBooks(this.categoryName,this.currentPage,5).subscribe({
+  this.categorypage.getCategory(this.categoryName,8,this.currentPage).subscribe({
     next: (BooksData) => {
       console.log(BooksData);
       this.Books=BooksData;
@@ -50,7 +50,7 @@ export class CategorypageComponent implements OnInit,OnChanges {
     console.log("pageEvent");
     
     this.currentPage=pageData.pageIndex+1;
-    this.categorypage.getBooks(this.categoryName,this.currentPage,pageData.pageSize).subscribe({
+    this.categorypage.getCategory(this.categoryName,pageData.pageSize,this.currentPage).subscribe({
       next: (moviesData) => {
         this.Books = moviesData.results;
         this.FilteredBooks = this.Books;

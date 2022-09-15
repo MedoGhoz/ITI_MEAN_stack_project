@@ -20,7 +20,7 @@ export class BookDetailsComponent implements OnInit {
       this.books.getBookByISBN(this.id).subscribe({next:(data)=>{
         this.book = data[0];
         console.log(data[0]);
-        this.books.getRelatedBooks(this.book.category!, 6).subscribe({next:(data)=>{
+        this.books.getCategory(this.book.category!, 6,1).subscribe({next:(data)=>{
           this.relatedBooks = data;
           console.log(...data);
         }})

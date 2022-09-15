@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Ibook } from 'books';
-import { HomeserviceService } from '../homeservice.service';
+import { BooksService } from '../books.service';
 
 @Component({
   selector: 'app-home',
@@ -13,20 +13,20 @@ export class HomeComponent implements OnInit {
   novels : Ibook[] = [];
   discount:Ibook[] = [];
   topRate : Ibook[]=[];
-  constructor(private movieService: HomeserviceService ) { }
+  constructor(private bookService: BooksService ) { }
  
   ngOnInit(): void {
-    this.movieService.getBestSeller().subscribe({next:(data:any)=>{
+    this.bookService.getSpecialBooks('best-sellers').subscribe({next:(data:any)=>{
       console.log(data);
       this.bestSeller = data;
     }});
     
-    this.movieService.getNovels().subscribe({next:(data:any)=>{
+    this.bookService.getCategory('Novels',4,1).subscribe({next:(data:any)=>{
       console.log(data);
       this.novels = data;
     }});
 
-    this.movieService.getDiscount().subscribe({next:(data:any)=>{
+    this.bookService.getSpecialBooks('discount').subscribe({next:(data:any)=>{
       console.log(data);
       this.discount = data;
     }});
