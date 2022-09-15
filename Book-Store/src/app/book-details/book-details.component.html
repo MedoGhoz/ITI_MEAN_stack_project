@@ -1,0 +1,69 @@
+<section class="container my-5 pt-5 content">
+    <div class="row mt-5 book_details">
+        <div class=" col-lg-5 col-md-5 col-sm-12 image">
+            <img [src]="book.image" alt="Book" style="height: 400px; ;">
+        </div>
+        <br> <br>
+        <div class="col-lg-7 col-md-7 col-sm-12">
+            <br>
+            <h5 style="color: gray;">{{book.category | uppercase}}</h5>
+            <h2>{{book.title}}</h2>
+            <h6>by <span style="color:green;">{{book.author}}</span></h6>
+            <h5 style="color: goldenrod;">{{ratingStars()}} <span class="rating_count"> {{book.rating.count}} ratings</span> </h5>
+            <hr style="margin: 10px 0 5px 0;">
+
+            <div class="ebook">
+                <b>eBook <span style="font-weight:600;">(PDF)</span> </b>
+            </div>
+            
+            <h6 class="isbn">ISBN: {{book.ISBN}}</h6>
+            <h2>EGP <span>{{book.price}}</span> </h2>
+            <br>
+            <button (click)="checkSignedIn()" type="button" class="btn btn-dark" style="font-size: 25px;"> 
+                <i class='fa fa-cart-plus' style='color: white; font-size: 30px;'></i> 
+                &nbsp;&nbsp;&nbsp;&nbsp; Add to Cart  &nbsp;&nbsp;&nbsp;&nbsp;
+            </button>
+
+        </div>
+    </div>
+
+    <br><br><br>
+
+    <h3 style="margin-bottom: 0;">Summary</h3>
+    <hr>
+    <div >
+        <p class="summary"> {{book.summary}} </p>
+    </div>
+    <br> <br>
+    <div class="container">
+        <div class="row" >
+            <div class="col-4" style="padding: 9px;">
+                <hr>
+            </div>
+            <div class="col-4">
+                <h2 style="text-align: center;">
+                    You May Also Like 
+                </h2>
+            </div>
+            
+            <div class="col-4" style="padding: 9px;">
+                <hr>
+            </div>
+        </div>
+    </div> 
+
+    <div class="container related_books">
+        <div class="row">
+            <div class="card col-3 rounded-0 border-0" style="width: 12em; margin: 20px" *ngFor="let book of relatedBooks">
+                <a (click)="reloadPage(book.ISBN)" [routerLink]="['/books/isbn', book.ISBN]">
+                    <img class="card-img-top rounded-0" 
+                        [src]="book.image" alt="Card image cap" style="height: 200px;" />
+                </a>
+                <div class="card-body px-1">
+                    <h6 class="card-title text"> {{book.title}} </h6>
+                    <p class="by">by <span class="related_author">{{book.author}}</span> </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
