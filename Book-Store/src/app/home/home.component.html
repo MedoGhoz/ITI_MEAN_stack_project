@@ -1,0 +1,51 @@
+
+<br>
+<br>
+<br>
+<div class="container py-5">
+  <!-- First Row [Prosucts]-->
+  <h2 class="font-weight-bold mb-2">Best Seller</h2>
+  <a class="font-italic text-muted mb-4">see More</a>
+  <div class="row pb-5 mb-4">
+    <div class="col-lg-3 col-md-6 mb-4 mb-lg-0" *ngFor="let book of bestSeller">
+      <!-- Card-->
+        <div class="card-body p-4"><img  class="image" src={{book.image}} alt="" class="img-fluid d-block mx-auto mb-3">
+          <h5> <a href="#" class="text-dark text-center">{{book.title}}</a></h5>
+          <p class="small text-muted font-italic">{{book.author}}</p>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- start discount -->
+<div class="container py-5">
+  <!-- First Row [Prosucts]-->
+  <h2 class="font-weight-bold mb-2">Discount</h2>
+  <a class="font-italic text-muted mb-4">see More</a>
+  <div class="row pb-5 mb-4">
+    <div class="col-lg-3 col-md-6 mb-4 mb-lg-0" *ngFor="let book of discount">
+      <!-- Card-->
+        <div class="card-body p-4"><img  class="image" src={{book.image}} alt=""  class="img-fluid d-block mx-auto mb-3">
+          <h5> <a href="#" class="text-dark">{{book.title}}</a></h5>
+          <p class="small text-muted font-italic">{{book.author}}</p>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- end discount -->
+
+<!-- start Novel -->
+<div class="container py-5">
+  <h2 class="font-weight-bold mb-2">Novel</h2>
+  <a class="font-italic text-muted mb-4">see More</a>
+  <div class="row pb-5 mb-4">
+    <div class="col-lg-3 col-md-6 mb-4 mb-lg-0" *ngFor="let book of novels">
+      <!-- Card-->
+        <div class="card-body p-4"><img class="image"src={{book.image}} alt="" class="img-fluid d-block mx-auto mb-3">
+          <h5> <a href="#" class="text-dark text-center">{{book.title}}</a></h5>
+          <p class="small text-muted font-italic">{{book.author}}</p>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- end Novel -->
