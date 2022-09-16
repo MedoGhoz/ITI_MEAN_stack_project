@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
 const book = require("./models/BookModel");
 const user = require('./models/userModel');
+const { updateOne } = require("./models/BookModel");
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -253,10 +254,10 @@ app.post('/test', authenticateToken, (req, resp) => {
     })
 })
 //add Cart
-app.put('/books/addCart/:isbn', (req, resp) => {
-    let idUser = req.body.id;
+app.put('/books/addCart/:id', authenticateToken,(req, resp) => {
+    let idUser = req.id;
     book
-        .find({ ISBN: req.params.isbn })
+        .find({ _id: req.params.id})
         .then((singlebook) => {
             let newcart = {
                 bookId: singlebook[0]._id,
@@ -265,6 +266,31 @@ app.put('/books/addCart/:isbn', (req, resp) => {
             user.findByIdAndUpdate(
                 { _id: idUser },
                 { $push: { cart: newcart } },
+                function (error, success) {
+                    if (error) {
+                        throw err;
+                    } else {
+                        resp.send("success");
+                    }
+                });
+        })
+        .catch((err) => {
+            resp.status(404).json({
+                error: "Failed to fetch data"
+            });
+        });
+})
+
+//remove cart
+app.put('/books/removeCart/:id', authenticateToken, (req, resp) => {
+    let idUser = req.id;
+    book
+        .find({ _id: req.params.id })
+        .then((singlebook) => {
+            user.updateOne(
+                { _id: idUser },
+                {$pull:{"cart":{"bookId":req.params.id}}},
+                { safe: true},
                 function (error, success) {
                     if (error) {
                         throw err;
@@ -306,4 +332,35 @@ app.put('/rating', authenticateToken, (req, resp) => {
             error: "Failed to fetch data"
         });
     });
+})
+
+//add to cart final
+app.put('/books/addCart/:id', authenticateToken, async (req, resp) => {
+    let idUser = req.id;
+    const cartBook = await user.findOne({_id: idUser,"cart.bookId":req.params.id});
+    if(cartBook){
+        resp.send("already in cart");
+        return;
+    }
+    const bookData = await user.findOne({_id: idUser,"books.bookId":req.params.id});
+    if(bookData){
+        resp.send("already owned");
+        return;
+    }
+    const singlebook = await book.find({ _id: req.params.id});
+    let newcart = {
+        bookId: singlebook[0]._id,
+        price: singlebook[0].price
+    }
+    user.findByIdAndUpdate(
+        { _id: idUser },
+        { $push: { cart: newcart } },
+        function (error, success) {
+            if (error) {
+                throw err;
+            } else {
+                resp.send("success");
+            }
+        }
+    );
 })
