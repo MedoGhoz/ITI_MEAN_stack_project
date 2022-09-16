@@ -34,8 +34,8 @@ function authenticateToken(req, resp, next) {
 
     jwt.verify(token, 'secret', (err, data) => {
         if (err) return resp.status(403).json({
-            error : "access token is not valid"
-        }) 
+            error: "access token is not valid"
+        })
         req.id = data.id;
         next()
     })
@@ -75,7 +75,7 @@ app.get("/books/category/:category", (req, resp) => {
         })
         .catch(() => {
             resp.status(404).json({
-                error:"Failed to fetch data"
+                error: "Failed to fetch data"
             });
         });
 });
@@ -175,73 +175,73 @@ app.get("/books/id/:id", (req, resp) => {
 app.post('/register', (req, resp, next) => {
     let email = req.body.email
     user.find({ email: email }).then((data) => {
-        if (data.length != 0) throw err;   
-        bcrypt.hash(req.body.password, 10, function(err, hashedPass){
+        if (data.length != 0) throw err;
+        bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
             if (err) {
                 resp.status(500).json({
                     error: "Cannot encrypt password"
                 });
             }
             let User = new user({
-            email: req.body.email,
-            password: hashedPass,
-            name: req.body.name,
-            gender: req.body.gender,
-            "credit": 100,
-            "cart": [],
-            "books":[]
-             })
+                email: req.body.email,
+                password: hashedPass,
+                name: req.body.name,
+                gender: req.body.gender,
+                "credit": 100,
+                "cart": [],
+                "books": []
+            })
             User.save()
-            .then(User => {
-                resp.json({
+                .then(User => {
+                    resp.json({
                         message: "User saved successfully!"
+                    })
                 })
-            })
-            .catch(err => {
-                resp.status(500).json({
-                    error: "Cannot add new user"
+                .catch(err => {
+                    resp.status(500).json({
+                        error: "Cannot add new user"
+                    })
                 })
-            })
-        })  
+        })
     }).catch(() => {
-         resp.status(409).json({
+        resp.status(409).json({
             error: "Email already exists"
         });
-})
+    })
 
 })
 
-app.post('/login', (req, resp, next) =>{
+app.post('/login', (req, resp, next) => {
     const userEmail = req.body.email;
     const password = req.body.password;
 
-    user.findOne({email: userEmail})
-    .then((user) => {
-        if(user){
-            bcrypt.compare(password, user.password, (err, result) => {
-                if(err){
-                    resp.json({
-                        error: err
-                    })
-                }else if(result){
-                    let token = jwt.sign({id: user._id},'secret',{expiresIn:'1h'})
-                    resp.json({
-                        name: user.name,
-                        message: "logged in successfully",
-                        token
-                    })
-                }else{
-                    resp.json({
-                        message: "Cannot generate token"
-                    })
-                }
-            });
-        }else{
-            resp.json({
-                message: "User not found"
-            })
-        }
-    })
+    user.findOne({ email: userEmail })
+        .then((user) => {
+            if (user) {
+                bcrypt.compare(password, user.password, (err, result) => {
+                    if (err) {
+                        resp.json({
+                            error: err
+                        })
+                    } else if (result) {
+                        let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' })
+                        resp.json({
+                            name: user.name,
+                            message: "logged in successfully",
+                            token
+                        })
+                    } else {
+                        resp.json({
+                            message: "Cannot generate token"
+                        })
+                    }
+                });
+            } else {
+                resp.json({
+                    message: "User not found"
+                })
+            }
+        })
 })
 
 app.post('/test', authenticateToken, (req, resp) => {
@@ -253,29 +253,57 @@ app.post('/test', authenticateToken, (req, resp) => {
     })
 })
 //add Cart
- app.put('/books/addCart/:isbn',(req,resp)=>{
-   let idUser=req.body.id;
-   book
-         .find({ ISBN: req.params.isbn })
-         .then((singlebook)=>{
-                let newcart={
-                    bookId:singlebook[0]._id,
-                    price:singlebook[0].price
-                 }
-                 user.findByIdAndUpdate(
-                    {_id:idUser},
-                    {$push:{cart:newcart}},
-                    function (error, success) {
-                        if (error) {
-                            throw err;
-                        } else {
-                           resp.send("success");
-                        }
-                    });
-         })
-         .catch((err) => {
-             resp.status(404).json({
+app.put('/books/addCart/:isbn', (req, resp) => {
+    let idUser = req.body.id;
+    book
+        .find({ ISBN: req.params.isbn })
+        .then((singlebook) => {
+            let newcart = {
+                bookId: singlebook[0]._id,
+                price: singlebook[0].price
+            }
+            user.findByIdAndUpdate(
+                { _id: idUser },
+                { $push: { cart: newcart } },
+                function (error, success) {
+                    if (error) {
+                        throw err;
+                    } else {
+                        resp.send("success");
+                    }
+                });
+        })
+        .catch((err) => {
+            resp.status(404).json({
                 error: "Failed to fetch data"
-             });
-         });
- })
+            });
+        });
+})
+
+app.put('/rating', authenticateToken, (req, resp) => {
+    const bookId = req.body.book_id;
+    const rate = req.body.rate
+    book.findById(bookId).then((data) => {
+        let rateCount = data.rating.count
+        let rateAvg = data.rating.average;
+        let newAvg = ((rateAvg * rateCount) + rate) / (rateCount + 1)
+        let newRate = {
+            average: newAvg,
+            count: rateCount + 1
+        }
+        book.findByIdAndUpdate(
+            { _id: bookId },
+            { rating: newRate },
+            function (error, success) {
+                if (error) {
+                    throw err;
+                } else {
+                    resp.send("success");
+                }
+            })
+    }).catch((err) => {
+        resp.status(404).json({
+            error: "Failed to fetch data"
+        });
+    });
+})
