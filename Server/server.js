@@ -252,3 +252,30 @@ app.post('/test', authenticateToken, (req, resp) => {
         resp.send("No data")
     })
 })
+//add Cart
+ app.put('/books/addCart/:isbn',(req,resp)=>{
+   let idUser=req.body.id;
+   book
+         .find({ ISBN: req.params.isbn })
+         .then((singlebook)=>{
+                let newcart={
+                    bookId:singlebook[0]._id,
+                    price:singlebook[0].price
+                 }
+                 user.findByIdAndUpdate(
+                    {_id:idUser},
+                    {$push:{cart:newcart}},
+                    function (error, success) {
+                        if (error) {
+                            throw err;
+                        } else {
+                           resp.send("success");
+                        }
+                    });
+         })
+         .catch((err) => {
+             resp.status(404).json({
+                error: "Failed to fetch data"
+             });
+         });
+ })
