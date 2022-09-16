@@ -32,8 +32,8 @@
         </li>
       </ul>
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-light" type="submit">Search</button>
+        <input #s class="form-control me-2" type="text" placeholder="Search for a book" aria-label="Search" (keyup.enter)="searchBook(s.value)" [value]="search">
+        <button class="btn btn-outline-light" type="submit" (click)="searchBook(s.value)">Search</button>
       </form>
     </nav>
     <ul class="nav  navbar-right">
@@ -51,7 +51,7 @@
         </div>
       </li>
       <li>
-        <p>test</p>
+        <div>----</div>
       </li>
       <li>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
@@ -61,20 +61,26 @@
         <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
           aria-labelledby="offcanvasDarkNavbarLabel">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">User Name</h5>
+            <h1 class="offcanvas-title" id="offcanvasDarkNavbarLabel">{{user.name}}</h1>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
               aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <li class="nav-item">
+              <li class="nav-item" *ngIf="user.token">
                 <a class="nav-link" aria-current="page" href="/mybooks">My Books</a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item" *ngIf="user.token">
                 <a class="nav-link" href="/account">Account settings</a>
+              </li> -->
+              <li class="nav-item" *ngIf="user.token">
+                <a class="nav-link" href="/home" (click)="logout()">Log out</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/login">Sign out</a>
+              <li class="nav-item" *ngIf="!user.token">
+                <a class="nav-link" href="/login">Log in</a>
+              </li>
+              <li class="nav-item" *ngIf="!user.token">
+                <a class="nav-link" href="/signup">Create a new Account</a>
               </li>
             </ul>
 

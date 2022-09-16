@@ -22,8 +22,14 @@ export class CategorypageComponent implements OnInit,OnChanges {
 
 
 
-  constructor(private categorypage: BooksService,private route:ActivatedRoute) { 
-
+  constructor(private categorypage: BooksService,private route:ActivatedRoute) {
+    route.params.subscribe((params)=>{
+      if(params.search){
+        this.categorypage.getBooksByTitle(params.search).subscribe({next:(books)=>{
+          this.Books=books
+        }})
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -48,14 +54,14 @@ export class CategorypageComponent implements OnInit,OnChanges {
 
   changePage(pageData:PageEvent){
     console.log("pageEvent");
-    
+
     this.currentPage=pageData.pageIndex+1;
     this.categorypage.getCategory(this.categoryName,pageData.pageSize,this.currentPage).subscribe({
       next: (moviesData) => {
         this.Books = moviesData.results;
         this.FilteredBooks = this.Books;
-        
-        
+
+
       },
     });
     this.update();
@@ -63,7 +69,7 @@ export class CategorypageComponent implements OnInit,OnChanges {
 
 
   ngOnChanges(): void {
-    
+
   }
 showDescrip(bookISBN:number){
   this.categorypage.flipDetails(bookISBN);

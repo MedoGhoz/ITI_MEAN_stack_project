@@ -5,13 +5,19 @@ import { CategorypageComponent } from './categorypage/categorypage.component';
 import { BookDetailsComponent } from './book-details/book-details.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
-{path: 'category/:cat', component: CategorypageComponent},
-{path:'books/isbn/:isbn',component: BookDetailsComponent},
-{path:'home',component: HomeComponent},
-{ path: '', redirectTo: 'home', pathMatch: 'full' },
-{ path: '**', component: PageNotFoundComponent },
+  {path:'',redirectTo:"/home",pathMatch:"full"},
+  {path:'home',component: HomeComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'signup', component: SignupComponent},
+  {path: 'search/:search', component: CategorypageComponent},
+  {path: 'category/:cat', component: CategorypageComponent},
+  {path:'books/isbn/:isbn',component: BookDetailsComponent},
+  { path: '**', component: PageNotFoundComponent },
+
 ];
 
 @NgModule({

@@ -190,10 +190,8 @@ app.post('/login', (req, resp, next) =>{
                     })
                 }else if(result){
                     let token = jwt.sign({id: user._id},'secret',{expiresIn:'1h'})
-                    resp.json({
-                        message: "logged in successfully",
-                        token
-                    })
+                    user.token=token
+                    resp.send(user)
                 }else{
                     resp.json({
                         message: "Cannot generate token"
@@ -207,3 +205,25 @@ app.post('/login', (req, resp, next) =>{
         }
     })
 })
+
+
+// app.post('/login',(req,res)=>{
+//     const{email,password}=req.body;
+//     const currentUser=user.find(currentUser=> currentUser.email ===email && currentUser.password ===password); 
+//     if(currentUser){
+//         res.send(generateTokenResponse(currentUser))
+//     }
+//     else{
+//         res.status(400).send("user name or password is not valid!")
+//     }
+// })
+
+// const generateTokenResponse = (currentUser)=>{
+//     const token = jwt.sign({
+//         email:currentUser.email, password:currentUser.password
+//     },"secret" , {
+//         expiresIn:'1d'
+//     });
+//     user.token=token;
+//     return currentUser;
+// }
