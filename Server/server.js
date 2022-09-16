@@ -254,32 +254,32 @@ app.post('/test', authenticateToken, (req, resp) => {
     })
 })
 //add Cart
-app.put('/books/addCart/:id', authenticateToken,(req, resp) => {
-    let idUser = req.id;
-    book
-        .find({ _id: req.params.id})
-        .then((singlebook) => {
-            let newcart = {
-                bookId: singlebook[0]._id,
-                price: singlebook[0].price
-            }
-            user.findByIdAndUpdate(
-                { _id: idUser },
-                { $push: { cart: newcart } },
-                function (error, success) {
-                    if (error) {
-                        throw err;
-                    } else {
-                        resp.send("success");
-                    }
-                });
-        })
-        .catch((err) => {
-            resp.status(404).json({
-                error: "Failed to fetch data"
-            });
-        });
-})
+// app.put('/books/addCart/:id', authenticateToken,(req, resp) => {
+//     let idUser = req.id;
+//     book
+//         .find({ _id: req.params.id})
+//         .then((singlebook) => {
+//             let newcart = {
+//                 bookId: singlebook[0]._id,
+//                 price: singlebook[0].price
+//             }
+//             user.findByIdAndUpdate(
+//                 { _id: idUser },
+//                 { $push: { cart: newcart } },
+//                 function (error, success) {
+//                     if (error) {
+//                         throw err;
+//                     } else {
+//                         resp.send("success");
+//                     }
+//                 });
+//         })
+//         .catch((err) => {
+//             resp.status(404).json({
+//                 error: "Failed to fetch data"
+//             });
+//         });
+// })
 
 //remove cart
 app.put('/books/removeCart/:id', authenticateToken, (req, resp) => {
@@ -310,9 +310,10 @@ app.put('/rating', authenticateToken, (req, resp) => {
     const bookId = req.body.book_id;
     const rate = req.body.rate
     book.findById(bookId).then((data) => {
-        let rateCount = data.rating.count
+        let rateCount = data.rating.count;
         let rateAvg = data.rating.average;
-        let newAvg = ((rateAvg * rateCount) + rate) / (rateCount + 1)
+        let newAvg = ((rateAvg * rateCount) + parseFloat(rate)) / (rateCount + 1)
+        newAvg = newAvg.toPrecision(3);
         let newRate = {
             average: newAvg,
             count: rateCount + 1
@@ -363,4 +364,32 @@ app.put('/books/addCart/:id', authenticateToken, async (req, resp) => {
             }
         }
     );
+})
+
+// checkout
+app.put('/placeorder', authenticateToken, async (req , resp) => {
+    const date = new Date();
+    const day = date.getDate();
+    const mounth = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const formatedDate = hours + ':' + minutes + ':' + seconds + '  ' + mounth + '/' + day + '/' + year;
+
+    let idUser = req.id;
+    const result = await user.findOne({_id: idUser},{cart: 1});
+    const cart = result.cart;
+    const addedbooks = []
+    for(let b of cart){
+        const id = b.id;
+        addedbooks.push({
+            bookId: id,
+            datePurchased: formatedDate
+        })
+    }
+    console.log(addedbooks)
+    const r = await user.updateOne({_id: idUser}, {$set:{cart:[]}})
+    const a = await user.updateOne({_id: idUser}, {$push: {books: {$each:addedbooks}}})
+
 })
