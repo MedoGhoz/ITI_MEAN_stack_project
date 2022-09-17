@@ -376,20 +376,30 @@ app.put('/placeorder', authenticateToken, async (req , resp) => {
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
     const formatedDate = hours + ':' + minutes + ':' + seconds + '  ' + mounth + '/' + day + '/' + year;
-
     let idUser = req.id;
-    const result = await user.findOne({_id: idUser},{cart: 1});
-    const cart = result.cart;
+    const result = await user.findOne({_id: idUser},{cart: 1});  
+    const cart = result.cart;//to get carts only
     const addedbooks = []
+    console.log(cart);
     for(let b of cart){
-        const id = b.id;
+        const id = b.bookId;
         addedbooks.push({
             bookId: id,
             datePurchased: formatedDate
         })
+        //to increment sellCount in book
+      const s= await book.findByIdAndUpdate(
+        {_id:id},
+        {$inc:{'sellCount':1}},
+        { $new: true}).lean().exec(
+        function (error, success) {
+        if (error) throw err;
+         else  resp.send("increment sellcount");
+        }
+        );
     }
     console.log(addedbooks)
-    const r = await user.updateOne({_id: idUser}, {$set:{cart:[]}})
+    const r = await user.updateOne({_id: idUser}, {$set:{cart:[]}}) //delete carts in user
     const a = await user.updateOne({_id: idUser}, {$push: {books: {$each:addedbooks}}})
 
 })
