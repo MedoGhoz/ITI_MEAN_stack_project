@@ -52,7 +52,7 @@ app.get("/books", (req, resp) => {
         .skip(skip)
         .then((data) => {
             if (data.length == 0) throw err;
-            resp.send(data);
+            resp.status(200).send(data);
         })
         .catch((err) => {
             resp.status(404).json({
@@ -72,7 +72,7 @@ app.get("/books/category/:category", (req, resp) => {
         .skip(skip)
         .then((specificCategory) => {
             if (specificCategory.length == 0) throw err;
-            resp.send(specificCategory);
+            resp.status(200).send(specificCategory);
         })
         .catch(() => {
             resp.status(404).json({
@@ -93,7 +93,7 @@ app.get("/books/title/:title", (req, resp) => {
         .skip(skip)
         .then((data) => {
             if (data.length == 0) throw err;
-            resp.send(data);
+            resp.status(200).send(data);
         })
         .catch(() => {
             resp.status(404).json({
@@ -113,7 +113,7 @@ app.get("/books/best-sellers", (req, resp) => {
         .skip(skip)
         .then((data) => {
             if (data.length == 0) throw err;
-            resp.send(data);
+            resp.status(200).send(data);
         })
         .catch(() => {
             resp.status(404).json({
@@ -132,7 +132,7 @@ app.get("/books/discount", (req, resp) => {
         .skip(skip)
         .then((data) => {
             if (data.length == 0) throw err;
-            resp.send(data);
+            resp.status(200).send(data);
         })
         .catch((err) => {
             resp.status(404).json({
@@ -147,7 +147,7 @@ app.get("/books/isbn/:isbn", (req, resp) => {
         .find({ ISBN: req.params.isbn })
         .then((data) => {
             if (data.length == 0) throw err;
-            resp.send(data);
+            resp.status(200).send(data);
         })
         .catch((err) => {
             resp.status(404).json({
@@ -163,7 +163,7 @@ app.get("/books/id/:id", (req, resp) => {
         .findById(id)
         .then((singleBook) => {
             if (singleBook.length == 0) throw err;
-            resp.send(singleBook);
+            resp.status(200).send(singleBook);
         })
         .catch(() => {
             resp.status(404).json({
@@ -175,36 +175,44 @@ app.get("/books/id/:id", (req, resp) => {
 // get user cart 
 app.post('/user/cart', authenticateToken, (req, resp) => {
     const idUser = req.id;
-    user.find({_id: idUser}, {cart:1})
-    .then((result) => {
-        const cart = result[0].cart;
-        if(cart.length === 0){
-            resp.send("cart is empty")
-        }else{
-            resp.send(cart);
-        }
-        
-    })
-    .catch((err) => {
-        resp.send(err);
-    })
+    user.find({ _id: idUser }, { cart: 1 })
+        .then((result) => {
+            const cart = result[0].cart;
+            if (cart.length === 0) {
+                resp.status(200).json({
+                    message: "Cart is empty"
+                })
+            } else {
+                resp.status(200).send(cart);
+            }
+
+        })
+        .catch((err) => {
+            resp.status(400).json({
+                error: err
+            });
+        })
 });
 
 // get user owned books 
 app.post('/user/books', authenticateToken, (req, resp) => {
     const idUser = req.id;
-    user.find({_id: idUser}, {books:1})
-    .then((result) => {
-        const books = result[0].books;
-        if(books.length === 0){
-            resp.send("You do not have any books yet")
-        }else{
-            resp.send(books);
-        }
-    })
-    .catch((err) => {
-        resp.send(err);
-    })
+    user.find({ _id: idUser }, { books: 1 })
+        .then((result) => {
+            const books = result[0].books;
+            if (books.length === 0) {
+                resp.status(200).json({
+                    message: "You do not have any books yet"
+                })
+            } else {
+                resp.status(200).send(books);
+            }
+        })
+        .catch((err) => {
+            resp.status(400).json({
+                error: err
+            });
+        })
 });
 
 // Add register user
@@ -256,65 +264,29 @@ app.post('/login', (req, resp, next) => {
             if (user) {
                 bcrypt.compare(password, user.password, (err, result) => {
                     if (err) {
-                        resp.json({
+                        resp.status(400).json({
                             error: err
                         })
                     } else if (result) {
                         let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' })
-                        resp.json({
+                        resp.status(200).json({
                             name: user.name,
                             message: "logged in successfully",
                             token
                         })
                     } else {
-                        resp.json({
+                        resp.status(500).json({
                             message: "Cannot generate token"
                         })
                     }
                 });
             } else {
-                resp.json({
+                resp.status(401).json({
                     message: "User not found"
                 })
             }
         })
 })
-
-app.post('/test', authenticateToken, (req, resp) => {
-    console.log(req.id);
-    user.findById(req.id).then((data) => {
-        resp.send(data)
-    }).catch(() => {
-        resp.send("No data")
-    })
-})
-//add Cart
-// app.put('/books/addCart/:id', authenticateToken,(req, resp) => {
-//     let idUser = req.id;
-//     book
-//         .find({ _id: req.params.id})
-//         .then((singlebook) => {
-//             let newcart = {
-//                 bookId: singlebook[0]._id,
-//                 price: singlebook[0].price
-//             }
-//             user.findByIdAndUpdate(
-//                 { _id: idUser },
-//                 { $push: { cart: newcart } },
-//                 function (error, success) {
-//                     if (error) {
-//                         throw err;
-//                     } else {
-//                         resp.send("success");
-//                     }
-//                 });
-//         })
-//         .catch((err) => {
-//             resp.status(404).json({
-//                 error: "Failed to fetch data"
-//             });
-//         });
-// })
 
 //remove cart
 app.put('/books/removeCart/:id', authenticateToken, (req, resp) => {
@@ -324,13 +296,15 @@ app.put('/books/removeCart/:id', authenticateToken, (req, resp) => {
         .then((singlebook) => {
             user.updateOne(
                 { _id: idUser },
-                {$pull:{"cart":{"bookId":req.params.id}}},
-                { safe: true},
+                { $pull: { "cart": { "bookId": req.params.id } } },
+                { safe: true },
                 function (error, success) {
                     if (error) {
                         throw err;
                     } else {
-                        resp.send("success");
+                        resp.status(200).json({
+                            message: "Book removed from cart successfully"
+                        });
                     }
                 });
         })
@@ -360,7 +334,9 @@ app.put('/rating', authenticateToken, (req, resp) => {
                 if (error) {
                     throw err;
                 } else {
-                    resp.send("success");
+                    resp.status(200).json({
+                        message: "rating added successfully"
+                    });
                 }
             })
     }).catch((err) => {
@@ -373,17 +349,21 @@ app.put('/rating', authenticateToken, (req, resp) => {
 //add to cart final
 app.put('/books/addCart/:id', authenticateToken, async (req, resp) => {
     let idUser = req.id;
-    const cartBook = await user.findOne({_id: idUser,"cart.bookId":req.params.id});
-    if(cartBook){
-        resp.send("already in cart");
+    const cartBook = await user.findOne({ _id: idUser, "cart.bookId": req.params.id });
+    if (cartBook) {
+        resp.status(400).json({
+            message: "Already in cart"
+        });
         return;
     }
-    const bookData = await user.findOne({_id: idUser,"books.bookId":req.params.id});
-    if(bookData){
-        resp.send("already owned");
+    const bookData = await user.findOne({ _id: idUser, "books.bookId": req.params.id });
+    if (bookData) {
+        resp.status(400).json({
+            message: "Already owned"
+        });
         return;
     }
-    const singlebook = await book.find({ _id: req.params.id});
+    const singlebook = await book.find({ _id: req.params.id });
     let newcart = {
         bookId: singlebook[0]._id,
         price: singlebook[0].price
@@ -395,48 +375,71 @@ app.put('/books/addCart/:id', authenticateToken, async (req, resp) => {
             if (error) {
                 throw err;
             } else {
-                resp.send("success");
+                resp.status(200).json({
+                    message: "Book added successfully"
+                });
             }
         }
     );
 })
 
 // checkout
-app.put('/placeorder', authenticateToken, async (req , resp) => {
+app.put('/placeorder', authenticateToken, async (req, resp) => {
     const date = new Date();
     const day = date.getDate();
-    const mounth = date.getMonth() + 1;
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-    const formatedDate = hours + ':' + minutes + ':' + seconds + '  ' + mounth + '/' + day + '/' + year;
+    const formatedDate = hours + ':' + minutes + ':' + seconds + '  ' + month + '/' + day + '/' + year;
     let idUser = req.id;
-    const result = await user.findOne({_id: idUser},{cart: 1});  
-    const cart = result.cart;//to get carts only
+
+    const result = await user.findOne({ _id: idUser }, { cart: 1, credit: 1 });
+    const balance= result.credit
+    const cart = result.cart; //to get carts only
     const addedbooks = []
+    let totalPrice = 0;
     console.log(cart);
-    for(let b of cart){
-        const id = b.bookId;
+    for (let book of cart) {
         addedbooks.push({
-            bookId: id,
+            bookId: book.id,
             datePurchased: formatedDate
         })
-        //to increment sellCount in book
-      const s= await book.findByIdAndUpdate(
-        {_id:id},
-        {$inc:{'sellCount':1}},
-        { $new: true}).lean().exec(
-            function (error, success) {
-                if (error){
-                    throw err;
-                }else{
-                    // resp.send("increment sellcount");
-                }  
-            }
-        );
+        totalPrice += book.price
     }
-    const r = await user.updateOne({_id: idUser}, {$set:{cart:[]}}) //delete carts in user
-    const a = await user.updateOne({_id: idUser}, {$push: {books: {$each:addedbooks}}})
-    resp.send("Purchased successfully")
+    console.log(totalPrice)
+    if (totalPrice > balance) {
+        resp.status(400).json({
+            error: "Insufficient balance"
+        })
+    } else {
+        for (let b of addedbooks) {
+            //to increment sellCount in book
+            const s = await book.findByIdAndUpdate(
+                { _id: b.bookId },
+                { $inc: { 'sellCount': 1 } },
+                { $new: true }).lean().exec(
+                    function (error, success) {
+                        if (error) {
+                            throw error;
+                        }
+                    }
+                );
+        }
+
+        // Clear cart
+        const r = await user.updateOne({ _id: idUser }, { $set: { cart: [] } }) 
+
+        // Update purchases
+        const a = await user.updateOne({ _id: idUser }, { $push: { books: { $each: addedbooks } } })
+
+        // Update user Balance
+        const s = await user.updateOne({ _id: idUser }, { credit: balance - totalPrice })
+
+        // Sending response
+        resp.status(200).json({
+            message: "Purchased successfully"
+        })
+    }
 })
