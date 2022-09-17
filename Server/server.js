@@ -172,6 +172,41 @@ app.get("/books/id/:id", (req, resp) => {
         });
 });
 
+// get user cart 
+app.post('/user/cart', authenticateToken, (req, resp) => {
+    const idUser = req.id;
+    user.find({_id: idUser}, {cart:1})
+    .then((result) => {
+        const cart = result[0].cart;
+        if(cart.length === 0){
+            resp.send("cart is empty")
+        }else{
+            resp.send(cart);
+        }
+        
+    })
+    .catch((err) => {
+        resp.send(err);
+    })
+});
+
+// get user owned books 
+app.post('/user/books', authenticateToken, (req, resp) => {
+    const idUser = req.id;
+    user.find({_id: idUser}, {books:1})
+    .then((result) => {
+        const books = result[0].books;
+        if(books.length === 0){
+            resp.send("You do not have any books yet")
+        }else{
+            resp.send(books);
+        }
+    })
+    .catch((err) => {
+        resp.send(err);
+    })
+});
+
 // Add register user
 app.post('/register', (req, resp, next) => {
     let email = req.body.email
@@ -392,14 +427,16 @@ app.put('/placeorder', authenticateToken, async (req , resp) => {
         {_id:id},
         {$inc:{'sellCount':1}},
         { $new: true}).lean().exec(
-        function (error, success) {
-        if (error) throw err;
-         else  resp.send("increment sellcount");
-        }
+            function (error, success) {
+                if (error){
+                    throw err;
+                }else{
+                    // resp.send("increment sellcount");
+                }  
+            }
         );
     }
-    console.log(addedbooks)
     const r = await user.updateOne({_id: idUser}, {$set:{cart:[]}}) //delete carts in user
     const a = await user.updateOne({_id: idUser}, {$push: {books: {$each:addedbooks}}})
-
+    resp.send("Purchased successfully")
 })
