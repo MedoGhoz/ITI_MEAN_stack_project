@@ -199,9 +199,7 @@ app.post('/login', (req, resp, next) =>{
                 }
             });
         }else{
-            resp.json({
-                message: "User not found"
-            })
+            resp.status(400).send("User name or Password is not valid!")
         }
     })
 })

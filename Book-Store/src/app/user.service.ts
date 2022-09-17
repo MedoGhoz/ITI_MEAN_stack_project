@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from 'User';
+import { IUserRegister } from 'IUserRegister';
 const USER_KEY='User';
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,21 @@ export class UserService {
       this.toastrService.error(errorResponse.error,'Login Failed');
     }
   }))}
+
+
+register(userRegister:IUserRegister):Observable<User>{
+  return this.http.post<User>('http://localhost:4000/register',userRegister).pipe(tap({next: (user)=>{
+    this.setUserToLocalStorage(user)
+    this.userSubject.next(user)
+    this.toastrService.success(
+      `Welcome To Websitename ${user.name}`,
+      'Register Successful'
+    )
+  },error: (errorResponse)=>{
+    this.toastrService.error(errorResponse.error,
+      'Register Failed')
+  }}))
+}
 
   logout(){
     this.userSubject.next(new User());
