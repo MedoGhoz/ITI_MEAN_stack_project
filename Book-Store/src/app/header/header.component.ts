@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
 search:string="";
 book:Ibook[]=[];
 user!:User;
-  constructor(private serv:BooksService,activatedRoute:ActivatedRoute,private router :Router ,private userService:UserService) {
+  constructor(private serv:BooksService,private activatedRoute:ActivatedRoute,private router :Router ,private userService:UserService) {
     activatedRoute.params.subscribe((params)=>{
       if(params.search){
         this.search=params.search
@@ -34,10 +34,6 @@ user!:User;
   }
 logout(){
 this.userService.logout();
-}
-
-showBooks(){
-  
 }
 
 }

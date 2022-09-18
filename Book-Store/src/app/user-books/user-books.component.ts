@@ -17,11 +17,6 @@ export class UserBooksComponent implements OnInit {
     userService.userObservable.subscribe((newUser)=>{
       this.user=newUser;
     })
-    this.categorypage.showBooks(this.user.token).subscribe({
-      next: (BooksData) => {
-        this.books = BooksData;
-      }
-    });
 
    }
 

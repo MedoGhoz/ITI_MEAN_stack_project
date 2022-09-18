@@ -58,6 +58,14 @@ export class BooksService {
     });
   }
 
+   showCart(token:string): Observable <any>
+  {
+    const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
+    return this.http.post(`http://localhost:4000/user/cart`,{},{
+      headers: header
+    });
+  }
+
   
 
   

@@ -74,4 +74,13 @@ register(userRegister:IUserRegister):Observable<User>{
     });
   }
 
+  removeCart(bookId: string,token:string): Observable <any>
+  {
+    const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
+    return this.http.put(`http://localhost:4000/books/removeCart/${bookId}`,{},{
+      headers: header
+    });
+  }
+
+
 }
