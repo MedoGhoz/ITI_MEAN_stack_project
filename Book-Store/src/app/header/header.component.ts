@@ -22,7 +22,6 @@ user!:User;
     })
 
     userService.userObservable.subscribe((newUser)=>{
-      console.log(newUser);
 
       this.user=newUser;
     })
@@ -35,6 +34,10 @@ user!:User;
   }
 logout(){
 this.userService.logout();
+}
+
+showBooks(){
+  
 }
 
 }

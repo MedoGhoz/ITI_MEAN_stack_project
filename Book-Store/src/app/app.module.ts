@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
-
+import {RatingModule} from 'ng-starrating';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CategorypageComponent } from './categorypage/categorypage.component';
@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { UserBooksComponent } from './user-books/user-books.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { ToastrModule } from 'ngx-toastr';
     PageNotFoundComponent,
     HomeComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    UserBooksComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +40,7 @@ import { ToastrModule } from 'ngx-toastr';
     MatPaginatorModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    RatingModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       timeOut:3000,

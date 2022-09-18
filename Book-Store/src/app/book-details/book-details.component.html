@@ -9,7 +9,15 @@
             <h5 style="color: gray;">{{book.category | uppercase}}</h5>
             <h2>{{book.title}}</h2>
             <h6>by <span style="color:green;">{{book.author}}</span></h6>
-            <h5 style="color: goldenrod;">{{ratingStars()}} <span class="rating_count"> {{book.rating.count}} ratings</span> </h5>
+            <!-- <h5 style="color: goldenrod;">{{ratingStars()}} <span class="rating_count"> {{book.rating.count}} ratings</span> </h5> -->
+            <star-rating
+            [value]="book.rating.average"
+            [totalstars]="5"
+            checkedcolor="gold"
+            uncheckedcolor="black"
+            [readonly]="true"
+            size="30px"
+            ></star-rating>
             <hr style="margin: 10px 0 5px 0;">
 
             <div class="ebook">
@@ -19,7 +27,7 @@
             <h6 class="isbn">ISBN: {{book.ISBN}}</h6>
             <h2>EGP <span>{{book.price}}</span> </h2>
             <br>
-            <button (click)="checkSignedIn()" type="button" class="btn btn-dark" style="font-size: 25px;"> 
+            <button (click)="addCart()" type="button" class="btn btn-dark" style="font-size: 25px;"> 
                 <i class='fa fa-cart-plus' style='color: white; font-size: 30px;'></i> 
                 &nbsp;&nbsp;&nbsp;&nbsp; Add to Cart  &nbsp;&nbsp;&nbsp;&nbsp;
             </button>

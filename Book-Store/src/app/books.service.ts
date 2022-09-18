@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Ibook } from 'books';
 import { Observable } from 'rxjs';
@@ -20,7 +20,6 @@ export class BooksService {
   }
 
   getCategory(category:string|null,limit:number,pageNumber:number):Observable<any>{
-    console.log("got Books");
     return this.http.get(`http://localhost:4000/books/category/${category}?limit=${limit}&page=${pageNumber}`);
 
   }
@@ -34,10 +33,34 @@ export class BooksService {
   {
     return this.http.get(`http://localhost:4000/books`);
   }
+  getdiscountBooks(): Observable <any>
+  {
+    return this.http.get(`http://localhost:4000/books/best-sellers`);
+  }
+
    getBooksByTitle(title:string): Observable <any>
   {
     return this.http.get(`http://localhost:4000/books/title/${title}`);
   }
+
+   addToCart(bookId:string,token:string): Observable <any>
+  {
+    const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
+    return this.http.put(`http://localhost:4000/books/addCart/${bookId}`,{},{
+      headers: header
+    });
+  }
+   showBooks(token:string): Observable <any>
+  {
+    const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
+    return this.http.post(`http://localhost:4000/user/books`,{},{
+      headers: header
+    });
+  }
+
+  
+
+  
 //  books/title/:title
   flipDetails(bookISBN: number) {
     this.Books.forEach((element: any) => {

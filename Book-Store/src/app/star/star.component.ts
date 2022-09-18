@@ -13,7 +13,6 @@ export class StarComponent implements OnInit,OnChanges {
   ngOnChanges(): void {
     
     this.cropWidth=(this.width/5) * this.cropWidth;
-    console.log(this.cropWidth);
   }
 
   ngOnInit(): void {

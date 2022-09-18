@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { UserBooksComponent } from './user-books/user-books.component';
 
 const routes: Routes = [
   {path:'',redirectTo:"/home",pathMatch:"full"},
@@ -14,7 +15,9 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'search/:search', component: CategorypageComponent},
+  {path: 'most_selling', component: CategorypageComponent},
   {path: 'category/:cat', component: CategorypageComponent},
+  {path: 'mybooks', component: UserBooksComponent},
   {path:'books/isbn/:isbn',component: BookDetailsComponent},
   { path: '**', component: PageNotFoundComponent },
 

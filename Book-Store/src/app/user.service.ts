@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { json } from 'express';
 import { IUserLogin } from 'IUserLogin';
@@ -66,4 +66,12 @@ register(userRegister:IUserRegister):Observable<User>{
     if(userJson) return JSON.parse(userJson) as User;
     return new User();
   }
+  showCart(token:string): Observable <any>
+  {
+    const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
+    return this.http.post(`http://localhost:4000/user/cart`,{},{
+      headers: header
+    });
+  }
+
 }
