@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Ibook } from 'books';
 import { BooksService } from '../books.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../user.service';
 import {User} from 'User';
 import { HttpHeaders } from '@angular/common/http';
@@ -16,7 +16,7 @@ export class BookDetailsComponent implements OnInit {
   relatedBooks: any[] = [];
   id!: Number;
   user!:User;
-  constructor(private books: BooksService,private route:ActivatedRoute,private userService: UserService) { 
+  constructor(private books: BooksService,private router:Router,private route:ActivatedRoute,private userService: UserService) { 
     userService.userObservable.subscribe((newUser)=>{
 
       this.user=newUser;
@@ -55,6 +55,7 @@ export class BookDetailsComponent implements OnInit {
     this.books.addToCart(this.book._id, this.user.token).subscribe({next:(data)=>{
       console.log(data);
     }})
+    window.location.reload()
   }
 
 }

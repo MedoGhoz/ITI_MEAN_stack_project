@@ -13,6 +13,7 @@ import { UserService } from '../user.service';
 export class UserBooksComponent implements OnInit {
   books!:UserBook[];
   user!: User;
+  showMessage!: boolean;
   constructor(private categorypage: BooksService, private route: ActivatedRoute, private userService: UserService) {
     userService.userObservable.subscribe((newUser)=>{
       this.user=newUser;
@@ -27,7 +28,13 @@ export class UserBooksComponent implements OnInit {
   update(): void {
     this.categorypage.showBooks(this.user.token).subscribe({
       next: (BooksData) => {
-        this.books = BooksData;
+        if(BooksData.message){
+          console.log("No books found");
+          this.showMessage = true;
+        }else{
+          this.books = BooksData;
+          this.showMessage = false;
+        }
       }
     });
   }

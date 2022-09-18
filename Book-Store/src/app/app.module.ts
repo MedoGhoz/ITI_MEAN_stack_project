@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { UserBooksComponent } from './user-books/user-books.component';
 import { UserCartComponent } from './user-cart/user-cart.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { UserCartComponent } from './user-cart/user-cart.component';
     LoginComponent,
     SignupComponent,
     UserBooksComponent,
-    UserCartComponent
+    UserCartComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,

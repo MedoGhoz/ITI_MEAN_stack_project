@@ -23,6 +23,8 @@ export class UserService {
 
    login(userLogin:IUserLogin):Observable<User>{
     return this.http.post<User>('http://localhost:4000/login',userLogin).pipe(tap({next:(user)=>{
+      console.log(user);
+      
     this.setUserToLocalStorage(user);
     this.userSubject.next(user);
     this.toastrService.success(
@@ -78,6 +80,23 @@ register(userRegister:IUserRegister):Observable<User>{
   {
     const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
     return this.http.put(`http://localhost:4000/books/removeCart/${bookId}`,{},{
+      headers: header
+    });
+  }
+
+  getCredit(token:string): Observable <any>
+  {
+    const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
+    return this.http.post(`http://localhost:4000/user/credit`,{},{
+      headers: header
+    });
+  }
+
+
+  order(token:string): Observable <any>
+  {
+    const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
+    return this.http.put(`http://localhost:4000/placeorder`,{},{
       headers: header
     });
   }

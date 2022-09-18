@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
 search:string="";
 book:Ibook[]=[];
 user!:User;
+cartCount!: number;
   constructor(private serv:BooksService,private activatedRoute:ActivatedRoute,private router :Router ,private userService:UserService) {
     activatedRoute.params.subscribe((params)=>{
       if(params.search){
@@ -28,12 +29,22 @@ user!:User;
   }
 
   ngOnInit(): void {
+    this.userService.showCart(this.user.token).subscribe((booksData) => {
+      if(booksData.message){
+        this.cartCount = 0;
+      }else{
+        this.cartCount = booksData.length;
+      }
+      
+    })
   }
+  
   searchBook(title:string):void{
   this.router.navigateByUrl('/search/'+title)
   }
 logout(){
 this.userService.logout();
 }
+
 
 }

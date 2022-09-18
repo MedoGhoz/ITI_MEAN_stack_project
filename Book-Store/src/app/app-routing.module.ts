@@ -9,12 +9,14 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { UserBooksComponent } from './user-books/user-books.component';
 import { UserCartComponent } from './user-cart/user-cart.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const routes: Routes = [
   {path:'',redirectTo:"/home",pathMatch:"full"},
   {path:'home',component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
+  {path: 'checkout', component: CheckoutComponent},
   {path: 'search/:search', component: CategorypageComponent},
   {path: 'most_selling', component: CategorypageComponent},
   {path: 'category/:cat', component: CategorypageComponent},
