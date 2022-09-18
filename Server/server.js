@@ -3,12 +3,14 @@ const app = express();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
+const cors = require("cors");
 const book = require("./models/BookModel");
 const user = require('./models/userModel');
 const { updateOne } = require("./models/BookModel");
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 mongoose
     .connect(
@@ -173,31 +175,51 @@ app.get("/books/id/:id", (req, resp) => {
 });
 
 // get user cart 
-app.post('/user/cart', authenticateToken, (req, resp) => {
+app.post('/user/cart', authenticateToken, async (req, resp) => {
     const idUser = req.id;
-    user.find({ _id: idUser }, { cart: 1 })
-        .then((result) => {
-            const cart = result[0].cart;
-            if (cart.length === 0) {
-                resp.status(200).json({
-                    message: "Cart is empty"
-                })
-            } else {
-                resp.status(200).send(cart);
-            }
-
+    const result = await user.findOne({ _id: idUser }, { cart: 1 });
+    let cartFromResult = result.cart;
+    if (cartFromResult.length == 0) {
+        resp.status(200).json({
+            message: "Cart is empty"
         })
-        .catch((err) => {
-            resp.status(400).json({
-                error: err
-            });
-        })
+    } else {
+        let cartToReturn = [];
+        for (let item of cartFromResult) {
+            let bookData = await book.findOne({ _id: item.bookId }, { title: 1, price: 1, image: 1 })
+            cartToReturn.push({
+                title: bookData.title,
+                image: bookData.image,
+                price: item.price
+            })
+        }
+        resp.status(200).send(cartToReturn)
+    }
 });
 
 // get user owned books 
-app.post('/user/books', authenticateToken, (req, resp) => {
+app.post('/user/books', authenticateToken, async (req, resp) => {
     const idUser = req.id;
-    user.find({ _id: idUser }, { books: 1 })
+    const result = await user.findOne({ _id: idUser }, { books: 1 });
+    let booksFromResult = result.books;
+    if (booksFromResult.length == 0) {
+        resp.status(200).json({
+            message: "No purchases yet"
+        })
+    } else {
+        let booksToReturn = [];
+        for (let item of booksFromResult) {
+            let bookData = await book.findOne({ _id: item.bookId }, { title: 1, price: 1, image: 1 })
+            booksToReturn.push({
+                title: bookData.title,
+                image: bookData.image,
+                price: bookData.price,
+                datePurchased: item.datePurchased
+            })
+        }
+        resp.status(200).send(booksToReturn)
+    }
+    /* user.find({ _id: idUser }, { books: 1 })
         .then((result) => {
             const books = result[0].books;
             if (books.length === 0) {
@@ -212,7 +234,7 @@ app.post('/user/books', authenticateToken, (req, resp) => {
             resp.status(400).json({
                 error: err
             });
-        })
+        }) */
 });
 
 // Add register user
@@ -396,7 +418,7 @@ app.put('/placeorder', authenticateToken, async (req, resp) => {
     let idUser = req.id;
 
     const result = await user.findOne({ _id: idUser }, { cart: 1, credit: 1 });
-    const balance= result.credit
+    const balance = result.credit
     const cart = result.cart; //to get carts only
     const addedbooks = []
     let totalPrice = 0;
@@ -429,7 +451,7 @@ app.put('/placeorder', authenticateToken, async (req, resp) => {
         }
 
         // Clear cart
-        const r = await user.updateOne({ _id: idUser }, { $set: { cart: [] } }) 
+        const r = await user.updateOne({ _id: idUser }, { $set: { cart: [] } })
 
         // Update purchases
         const a = await user.updateOne({ _id: idUser }, { $push: { books: { $each: addedbooks } } })
