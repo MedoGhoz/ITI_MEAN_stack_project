@@ -188,6 +188,7 @@ app.post('/user/cart', authenticateToken, async (req, resp) => {
         for (let item of cartFromResult) {
             let bookData = await book.findOne({ _id: item.bookId }, { title: 1, price: 1, image: 1 })
             cartToReturn.push({
+                _id: item.bookId,
                 title: bookData.title,
                 image: bookData.image,
                 price: item.price
@@ -237,6 +238,14 @@ app.post('/user/books', authenticateToken, async (req, resp) => {
         }) */
 });
 
+app.post('/user/credit', authenticateToken, async (req, resp) => {
+    const idUser = req.id;
+    const result = await user.findOne({ _id: idUser }, { credit: 1 });
+    if(result){
+        resp.status(200).json({credit:result.credit});
+    }
+});
+
 // Add register user
 app.post('/register', (req, resp, next) => {
     let email = req.body.email
@@ -253,7 +262,7 @@ app.post('/register', (req, resp, next) => {
                 password: hashedPass,
                 name: req.body.name,
                 gender: req.body.gender,
-                "credit": 100,
+                "credit": 500,
                 "cart": [],
                 "books": []
             })
@@ -292,7 +301,7 @@ app.post('/login', (req, resp, next) => {
                     } else if (result) {
                         let token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' })
                         resp.status(200).json({
-                            name: user.name,
+                            name: user.name,                    
                             message: "logged in successfully",
                             token
                         })
