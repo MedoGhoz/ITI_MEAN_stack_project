@@ -38,11 +38,18 @@ export class CategorypageComponent implements OnInit, OnChanges {
           }
         })
       } else if (route.snapshot.url[0].path === "most_selling") {
-        this.categorypage.getdiscountBooks().subscribe({
+        this.categorypage.getMostSellingBooks().subscribe({
           next: (books) => {
             this.Books = books
           }
         })
+      }else if(route.snapshot.url[0].path === "hot"){
+        this.categorypage.getDiscountBooks().subscribe({
+          next: (books) => {
+            this.Books = books
+          }
+        })
+
       } else if (route.snapshot.url[0].path === "mybooks") {
         this.categorypage.showBooks(this.user.token).subscribe({
           next: (books) => {

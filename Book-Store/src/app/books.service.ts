@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Ibook } from 'books';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 export class BooksService {
   Books!:Ibook[];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastrService:ToastrService) { }
 
   getBookById(bookId:string):Observable<any>{
     return this.http.get(`http://localhost:4000/books/id/${bookId}`);
@@ -33,9 +34,14 @@ export class BooksService {
   {
     return this.http.get(`http://localhost:4000/books`);
   }
-  getdiscountBooks(): Observable <any>
+  getMostSellingBooks(): Observable <any>
   {
     return this.http.get(`http://localhost:4000/books/best-sellers`);
+  }
+
+  getDiscountBooks(): Observable <any>
+  {
+    return this.http.get(`http://localhost:4000/books/discount`);
   }
 
    getBooksByTitle(title:string): Observable <any>
@@ -50,6 +56,15 @@ export class BooksService {
       headers: header
     });
   }
+
+   addRating(bookId:string, rating:number, token:string): Observable <any>
+  {
+    const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
+    return this.http.put(`http://localhost:4000/rating`,{rate: rating,book_id:bookId},{
+      headers: header
+    });
+  }
+
    showBooks(token:string): Observable <any>
   {
     const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)

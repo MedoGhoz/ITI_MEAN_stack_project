@@ -38,7 +38,7 @@ export class CheckoutComponent implements OnInit {
           this.books = BooksData;
           this.showMessage = false;
           for(let book of this.books){
-            this.totalPrice += book.price;
+            this.totalPrice += book.price * (1 - book.discount / 100);
           }
         }
         

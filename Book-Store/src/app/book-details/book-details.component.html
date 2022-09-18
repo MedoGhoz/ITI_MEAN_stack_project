@@ -15,8 +15,9 @@
             [totalstars]="5"
             checkedcolor="gold"
             uncheckedcolor="black"
-            [readonly]="true"
+            [readonly]="false"
             size="30px"
+            (rate)="onRate($event)"
             ></star-rating>
             <hr style="margin: 10px 0 5px 0;">
 

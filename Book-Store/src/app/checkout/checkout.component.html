@@ -8,7 +8,9 @@
               <thead style="background-color:#84B0CA ;" class="text-white">
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Description</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Price Before Discount</th>
+                  <th scope="col">Discount</th>
                   <th scope="col">Amount</th>
                 </tr>
               </thead>
@@ -17,6 +19,8 @@
                   <th scope="row">{{i + 1}}</th>
                   <td>{{book.title}}</td>
                   <td>{{book.price | currency}}</td>
+                  <td>{{book.discount}}%</td>
+                  <td>{{book.price * (1 - book.discount / 100) | currency}}</td>
                 </tr>
               </tbody>
   
