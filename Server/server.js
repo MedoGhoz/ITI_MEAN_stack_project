@@ -425,7 +425,7 @@ app.put('/placeorder', authenticateToken, async (req, resp) => {
     console.log(cart);
     for (let book of cart) {
         addedbooks.push({
-            bookId: book.id,
+            bookId: book.bookId,
             datePurchased: formatedDate
         })
         totalPrice += book.price
