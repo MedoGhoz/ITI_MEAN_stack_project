@@ -3,5 +3,6 @@ export interface UserBook {
     title: string,
     image: string,
     price: number,
+    discount: number,
     datePurchased: string
 }
