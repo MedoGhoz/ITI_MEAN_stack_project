@@ -6,8 +6,8 @@
         <br> <br>
         <div class="col-lg-7 col-md-7 col-sm-12">
             <br>
-            <h5 style="color: gray;">{{book.category | uppercase}}</h5>
-            <h2>{{book.title}}</h2>
+            <h6 style="color: gray;">{{book.category | uppercase}}</h6>
+            <h3>{{book.title}}</h3>
             <h6>by <span style="color:green;">{{book.author}}</span></h6>
             <h5 style="color: goldenrod;">{{ratingStars()}} <span class="rating_count"> {{book.rating.count}} ratings</span> </h5>
             <hr style="margin: 10px 0 5px 0;">
@@ -29,7 +29,7 @@
 
     <br><br><br>
 
-    <h2 style="margin-bottom: 0;">Summary</h2>
+    <h3 style="margin-bottom: 0;">Summary</h3>
     <hr>
     <div >
         <p class="summary"> {{book.summary}} </p>
