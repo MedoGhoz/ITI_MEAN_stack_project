@@ -8,10 +8,13 @@ const userSchema = mongoose.Schema({
     "credit": {type: Number, required: false},
     "cart": [{
         "bookId": {type: String, required: false},
-        "price": {type: Number, required: false}
+        "discount": {type: Number, required: false},
+        "price": {type: Number, required: false},
+        "priceAfterDiscount": {type: Number, required: false}
     }],
     "books":[{
         "bookId": {type: String, required: false},
+        "rated": {type:Boolean, required: false, default:false},
         "datePurchased": {type: String, required: false}
     }]
 })
