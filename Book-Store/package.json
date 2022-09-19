@@ -29,6 +29,8 @@
     "jsonwebtoken": "^8.5.1",
     "material": "^0.4.3",
     "mongoose": "^6.6.0",
+    "ng-starrating": "^1.0.20",
+    "ngx-toastr": "^15.0.0",
     "pagination": "^0.4.6",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

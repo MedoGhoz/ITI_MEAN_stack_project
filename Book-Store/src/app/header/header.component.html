@@ -1,7 +1,7 @@
 <nav class="navbar navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="/home">
-      <i class="fa fa-book" aria-hidden="true"></i> OurWebsiteName</a>
+      <i class="fa fa-book" aria-hidden="true"></i> READYBOOKS</a>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <ul class="navbar-nav">
@@ -9,10 +9,10 @@
           <a class="nav-link" aria-current="page" href="/home">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/hot">Hot</a>
+          <a class="nav-link" href="/hot">Hot Deals</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/most-selling">Most Selling</a>
+          <a class="nav-link" href="/most_selling">Most Selling</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -32,8 +32,8 @@
         </li>
       </ul>
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-light" type="submit">Search</button>
+        <input #s class="form-control me-2" type="text" placeholder="Search for a book" aria-label="Search" (keyup.enter)="searchBook(s.value)" [value]="search">
+        <button class="btn btn-outline-light" type="submit" (click)="searchBook(s.value)">Search</button>
       </form>
     </nav>
     <ul class="nav  navbar-right">
@@ -41,17 +41,17 @@
         <i class="bi bi-cart2"></i>
       </li>
       <li>
-        <div class="btn-nav">
+        <div class="btn-nav" *ngIf="user.token">
           <button type="button" class="btn btn-light position-relative">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            <a href="/mycart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              12
+              {{cartCount}}
             </span>
           </button>
         </div>
       </li>
       <li>
-        <p>test</p>
+        <div>----</div>
       </li>
       <li>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
@@ -61,20 +61,26 @@
         <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
           aria-labelledby="offcanvasDarkNavbarLabel">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">User Name</h5>
+            <h1 class="offcanvas-title" id="offcanvasDarkNavbarLabel">{{user.name}}</h1>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
               aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <li class="nav-item">
+              <li class="nav-item" *ngIf="user.token">
                 <a class="nav-link" aria-current="page" href="/mybooks">My Books</a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item" *ngIf="user.token">
                 <a class="nav-link" href="/account">Account settings</a>
+              </li> -->
+              <li class="nav-item" *ngIf="user.token">
+                <a class="nav-link" href="/home" (click)="logout()">Log out</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/login">Sign out</a>
+              <li class="nav-item" *ngIf="!user.token">
+                <a class="nav-link" href="/login">Log in</a>
+              </li>
+              <li class="nav-item" *ngIf="!user.token">
+                <a class="nav-link" href="/signup">Create a new Account</a>
               </li>
             </ul>
 

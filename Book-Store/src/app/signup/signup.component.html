@@ -1,0 +1,89 @@
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+          <div class="card-body p-4 p-md-5">
+            <h1 class="mb-4 pb-2 pb-md-0 mb-md-5">Register a new User</h1>
+            <form [formGroup]="registerForm" (ngSubmit)="submit()">
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <div class="form-outline">
+                    <input type="text" id="userName" placeholder="Name" class="form-control form-control-lg" formControlName="name" >
+                    <div class="error-list" *ngIf="fc.name.errors && isSubmitted">
+                      <div *ngIf="fc.name.errors.required">Name shouldn`t be empty</div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="row">
+              <div class="col-md-12 mb-4">
+
+                <div class="form-outline">
+                  <input type="email" id="email" placeholder="E-mail" class="form-control form-control-lg" formControlName="email">
+                  <div class="error-list" *ngIf="fc.email.errors && isSubmitted">
+                    <div *ngIf="fc.email.errors.required">E-mail shouldn`t be empty</div>
+                    <div *ngIf="fc.email.errors.email">Enter right mail format</div>
+                  </div>
+                </div>
+
+              </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <div class="form-outline">
+                    <input type="password" id="password" placeholder="Password" class="form-control form-control-lg" formControlName="password">
+                    <div class="error-list" *ngIf="fc.password.errors && isSubmitted">
+                      <div *ngIf="fc.password.errors.required">Password shouldn`t be empty</div>
+                      <div *ngIf="fc.password.errors.minlength">Password is too short</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row">
+
+                <div class="col-md-6 mb-4">
+
+                  <h6 class="mb-2 pb-1">Gender: </h6>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
+                      value="female" checked formControlName="gender" />
+                    <label class="form-check-label" for="femaleGender">Female</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
+                      value="male" formControlName="gender"/>
+                    <label class="form-check-label" for="maleGender">Male</label>
+                  </div>
+
+
+                </div>
+              </div>
+
+             <div class="mt-4 pt-2" >
+                <button type="submit" class="btn btn-dark col-md-12 mb-4">Register a new account</button>
+              </div>
+              <div class="login">
+                Already a user? &nbsp;
+            <a routerLink="/login" [queryParams]="{returnUrl:returnUrl}" style="cursor: pointer;">
+                  Login Here
+                </a>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

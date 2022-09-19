@@ -14,6 +14,7 @@ const userSchema = mongoose.Schema({
         "bookId": {"type": String, "required": false},
         "datePurchased": {"type": String, "required": false}
     }],
+    "token":String
 })
 
 module.exports = mongoose.model('user', userSchema);
