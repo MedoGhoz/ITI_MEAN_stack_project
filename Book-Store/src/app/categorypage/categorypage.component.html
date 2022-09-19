@@ -1,8 +1,6 @@
-<div class="categorylineBackground">
-  <h1 class="categoryline">Welcome to <strong class="category">{{categoryName}}</strong></h1>
-</div>
+<br><br><br><br>
 <div class="row container" style="margin: auto;">
-  <!-- <div></div> -->
+
   <div class="card" style="width: 18rem;" *ngFor="let book of Books | paginate: { itemsPerPage: 6, currentPage: currentPage, totalItems:totalLength }">
     <a [routerLink]="['/books/isbn', book.ISBN]">
       <img class="card-img-top" width="300px" height="300px" src={{book.image}} alt="Card image cap">
