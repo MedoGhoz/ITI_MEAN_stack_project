@@ -29,13 +29,13 @@ export class UserService {
         this.setUserToLocalStorage(user);
         this.userSubject.next(user);
         this.toastrService.success(
-          `welcome to websiteName ${user.name}!`,
+          `welcome ${user.name}!`,
           'Login Successful !'
         )
 
 
       }, error: (errorResponse) => {
-        this.toastrService.error(errorResponse.error, 'Login Failed');
+        this.toastrService.error('Login Failed');
       }
     }))
   }
@@ -51,7 +51,7 @@ export class UserService {
           'Register Successful'
         )
       }, error: (errorResponse) => {
-        this.toastrService.error(errorResponse.error,
+        this.toastrService.error(
           'Register Failed')
       }
     }))

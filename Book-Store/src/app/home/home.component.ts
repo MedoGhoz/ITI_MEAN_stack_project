@@ -17,17 +17,14 @@ export class HomeComponent implements OnInit {
  
   ngOnInit(): void {
     this.bookService.getSpecialBooks('best-sellers').subscribe({next:(data:any)=>{
-      console.log(data);
       this.bestSeller = data;
     }});
     
     this.bookService.getCategory('Novels',4,1).subscribe({next:(data:any)=>{
-      console.log(data);
       this.novels = data;
     }});
 
     this.bookService.getSpecialBooks('discount').subscribe({next:(data:any)=>{
-      console.log(data);
       this.discount = data;
     }});
 }

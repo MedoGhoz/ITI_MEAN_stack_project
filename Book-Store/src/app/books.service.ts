@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Ibook } from 'books';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +54,25 @@ export class BooksService {
     const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
     return this.http.put(`http://localhost:4000/books/addCart/${bookId}`,{},{
       headers: header
-    });
+    }).pipe(tap({
+      next: (data) => {
+        this.toastrService.success(
+          'Added to cart'
+        )
+        
+      }, error: (errorResponse) => {
+        let errorMessage = '';
+        if(errorResponse.error.error === 'access token is not valid'){
+          errorMessage = 'You should sign in to add to cart'
+        }else{
+          errorMessage = 'Cannot add to cart'
+        }
+        
+        this.toastrService.error(
+          errorMessage)
+          
+      }
+    }))
   }
 
    addRating(bookId:string, rating:number, token:string): Observable <any>
@@ -62,7 +80,19 @@ export class BooksService {
     const header = new HttpHeaders().set('Authorization',`Bearer ${token}`).set('Content-Type', 'application/json',)
     return this.http.put(`http://localhost:4000/rating`,{rate: rating,book_id:bookId},{
       headers: header
-    });
+    }).pipe(tap({
+      next: (data) => {
+        this.toastrService.success(
+          'rating added successfully'
+        )
+        
+      }, error: (errorResponse) => {
+        
+        this.toastrService.error(
+          "cannot add rating already rated or not owned or signed in")
+          
+      }
+    }))
   }
 
    showBooks(token:string): Observable <any>

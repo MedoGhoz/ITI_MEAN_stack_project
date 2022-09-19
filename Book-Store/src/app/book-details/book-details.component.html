@@ -1,7 +1,7 @@
-<section class="container my-5 pt-5 content">
-    <div class="row mt-5 book_details">
+<section class="container my-5 pt-5 content" *ngIf="book">
+    <div class="row mt-5 book_details" >
         <div class=" col-lg-5 col-md-5 col-sm-12 image">
-            <img [src]="book.image" alt="Book" style="height: 400px; ;">
+            <img [src]="book.image" alt="Book" style="height: 400px;">
         </div>
         <br> <br>
         <div class="col-lg-7 col-md-7 col-sm-12">
@@ -26,7 +26,7 @@
             </div>
             
             <h6 class="isbn">ISBN: {{book.ISBN}}</h6>
-            <h2>EGP <span>{{book.price}}</span> </h2>
+            <h2><span>{{book.price | currency}}</span> </h2>
             <br>
             <button (click)="addCart()" type="button" class="btn btn-dark" style="font-size: 25px;"> 
                 <i class='fa fa-cart-plus' style='color: white; font-size: 30px;'></i> 

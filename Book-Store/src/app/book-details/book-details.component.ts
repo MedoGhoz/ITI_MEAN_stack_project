@@ -29,13 +29,10 @@ export class BookDetailsComponent implements OnInit {
       this.id = Number(this.route.snapshot.paramMap.get('isbn'));
     this.books.getBookByISBN(this.id).subscribe({
       next: (data) => {
-        console.log(data[0])
         this.book = data[0];
-        console.log(data[0]);
         this.books.getCategory(this.book.category!, 6, 1).subscribe({
           next: (data) => {
             this.relatedBooks = data;
-            console.log(...data);
           }
         })
       }
@@ -56,20 +53,19 @@ export class BookDetailsComponent implements OnInit {
     }, 800);
   }
 
-  addCart() {
+   addCart() {
     this.books.addToCart(this.book._id, this.user.token).subscribe({
       next: (data) => {
-        console.log(data);
+        location.reload()
       }
     })
-    window.location.reload()
+    
   }
 
   onRate($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
-    console.log($event);
     this.books.addRating(this.book._id, $event.newValue, this.user.token).subscribe({
       next: (data) => {
-        console.log(data);
+        location.reload()
       }
     })
 
