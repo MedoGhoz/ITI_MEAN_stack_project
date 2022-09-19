@@ -11,11 +11,22 @@
             <h6>by <span style="color:green;">{{book.author}}</span></h6>
             <!-- <h5 style="color: goldenrod;">{{ratingStars()}} <span class="rating_count"> {{book.rating.count}} ratings</span> </h5> -->
             <star-rating
+            *ngIf="user.token"
             [value]="book.rating.average"
             [totalstars]="5"
             checkedcolor="gold"
             uncheckedcolor="black"
             [readonly]="false"
+            size="30px"
+            (rate)="onRate($event)"
+            ></star-rating>
+            <star-rating
+            *ngIf="!user.token"
+            [value]="book.rating.average"
+            [totalstars]="5"
+            checkedcolor="gold"
+            uncheckedcolor="black"
+            [readonly]="true"
             size="30px"
             (rate)="onRate($event)"
             ></star-rating>

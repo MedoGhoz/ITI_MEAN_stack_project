@@ -89,7 +89,7 @@ export class BooksService {
       }, error: (errorResponse) => {
         
         this.toastrService.error(
-          "cannot add rating already rated or not owned or signed in")
+          "cannot add rating already rated or not owned")
           
       }
     }))
