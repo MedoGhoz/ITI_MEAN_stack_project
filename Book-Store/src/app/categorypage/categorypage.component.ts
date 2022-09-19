@@ -55,11 +55,21 @@ export class CategorypageComponent implements OnInit, OnChanges {
           }
         })
 
-      } else if (route.snapshot.url[0].path === "mybooks") {
-        this.categorypage.showBooks(this.user.token).subscribe({
+      } else if (route.snapshot.url[0].path === "allBooks") {
+        this.categorypage.getAllBooks().subscribe({
           next: (books) => {
             this.Books = books
             this.totalLength=books.length
+            this.Books.sort(function(a,b){
+                if(a.title>b.title){
+                  return -1;
+                }
+                if(a.title<b.title){
+                  return 1;
+                }
+                return 0;
+
+        })
           }
         })
         // console.log(route.snapshot.url[0].path);

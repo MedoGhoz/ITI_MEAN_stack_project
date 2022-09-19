@@ -20,6 +20,7 @@ const routes: Routes = [
   {path: 'search/:search', component: CategorypageComponent},
   {path: 'most_selling', component: CategorypageComponent},
   {path: 'hot', component: CategorypageComponent},
+  {path: 'allBooks', component: CategorypageComponent},
   {path: 'category/:cat', component: CategorypageComponent},
   {path: 'mybooks', component: UserBooksComponent},
   {path: 'mycart', component: UserCartComponent},

@@ -1,14 +1,18 @@
-h4 {
+/* h4 {
   color:brown;
 }
 h2{
   color: red;
 }
-
+*/
 a{
   text-decoration: none;
 }
-
+.btn-block{
+  margin: auto;
+  display: block;
+  width: 800px;
+}
 .card,
 h1 {
   margin: 25px;
