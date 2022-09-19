@@ -13,7 +13,7 @@
             <div class="col-md-5">
                 <div class="card-body" style="padding-top: 60px;">
                     <p class="card-text">Purchased At: &nbsp; &nbsp;{{book.datePurchased}}</p>
-                    <p class="card-text">price: &nbsp; &nbsp; {{book.price | currency}}</p>
+                    <p class="card-text">price: &nbsp; &nbsp; {{book.price * (1 - book.discount / 100) | currency}}</p>
                 </div>
             </div>
         </div>
