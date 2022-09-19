@@ -186,12 +186,13 @@ app.post('/user/cart', authenticateToken, async (req, resp) => {
     } else {
         let cartToReturn = [];
         for (let item of cartFromResult) {
-            let bookData = await book.findOne({ _id: item.bookId }, { title: 1, price: 1, image: 1 })
+            let bookData = await book.findOne({ _id: item.bookId }, { title: 1, price: 1, image: 1, discount:1 })
             cartToReturn.push({
                 _id: item.bookId,
                 title: bookData.title,
                 image: bookData.image,
-                price: item.price
+                price: item.price,
+                discount: bookData.discount
             })
         }
         resp.status(200).send(cartToReturn)
@@ -345,11 +346,59 @@ app.put('/books/removeCart/:id', authenticateToken, (req, resp) => {
             });
         });
 })
+//Old rating function
+// app.put('/rating', authenticateToken, (req, resp) => {
+//     const bookId = req.body.book_id;
+//     const rate = req.body.rate
+//     book.findById(bookId).then((data) => {
+//         let rateCount = data.rating.count;
+//         let rateAvg = data.rating.average;
+//         let newAvg = ((rateAvg * rateCount) + parseFloat(rate)) / (rateCount + 1)
+//         newAvg = newAvg.toPrecision(3);
+//         let newRate = {
+//             average: newAvg,
+//             count: rateCount + 1
+//         }
+//         book.findByIdAndUpdate(
+//             { _id: bookId },
+//             { rating: newRate },
+//             function (error, success) {
+//                 if (error) {
+//                     throw err;
+//                 } else {
+//                     resp.status(200).json({
+//                         message: "rating added successfully"
+//                     });
+//                 }
+//             })
+//     }).catch((err) => {
+//         resp.status(404).json({
+//             error: "Failed to fetch data"
+//         });
+//     });
+// })
 
-app.put('/rating', authenticateToken, (req, resp) => {
+// new rating function 
+app.put('/rating', authenticateToken, async (req, resp) => {
+    const userId = req.id;
     const bookId = req.body.book_id;
     const rate = req.body.rate
-    book.findById(bookId).then((data) => {
+
+    const userData = await user.findOne({_id: userId, "books.bookId":bookId},{books:1})
+    let singleBook = []
+    if(userData){
+         singleBook = userData.books.filter(book => {
+            return book.bookId == bookId
+        })
+    }
+    
+    if(userData && !singleBook[0].rated){
+        await user.updateOne({
+            _id: userId,
+            books: { $elemMatch: { bookId: bookId} }
+          },
+          { $set: { "books.$.rated" : true } })
+        const data = await book.findById(bookId);
         let rateCount = data.rating.count;
         let rateAvg = data.rating.average;
         let newAvg = ((rateAvg * rateCount) + parseFloat(rate)) / (rateCount + 1)
@@ -370,11 +419,11 @@ app.put('/rating', authenticateToken, (req, resp) => {
                     });
                 }
             })
-    }).catch((err) => {
-        resp.status(404).json({
-            error: "Failed to fetch data"
-        });
-    });
+
+    }else{
+        resp.status(403).json({message:"you do not own the book"})
+    }
+    
 })
 
 //add to cart final
@@ -397,7 +446,9 @@ app.put('/books/addCart/:id', authenticateToken, async (req, resp) => {
     const singlebook = await book.find({ _id: req.params.id });
     let newcart = {
         bookId: singlebook[0]._id,
-        price: singlebook[0].price
+        discount: singlebook[0].discount,
+        price: singlebook[0].price,
+        priceAfterDiscount: singlebook[0].price * ( 1 - singlebook[0].discount / 100)
     }
     user.findByIdAndUpdate(
         { _id: idUser },
@@ -437,7 +488,7 @@ app.put('/placeorder', authenticateToken, async (req, resp) => {
             bookId: book.bookId,
             datePurchased: formatedDate
         })
-        totalPrice += book.price
+        totalPrice += book.priceAfterDiscount
     }
     console.log(totalPrice)
     if (totalPrice > balance) {
