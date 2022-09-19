@@ -270,6 +270,7 @@ app.post('/register', (req, resp, next) => {
             User.save()
                 .then(User => {
                     resp.json({
+                        name: User.name,
                         message: "User saved successfully!"
                     })
                 })
