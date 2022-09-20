@@ -15,6 +15,9 @@ export class UserCartComponent implements OnInit {
   books!: CartBook[];
   user!: User;
   showMessage!: boolean;
+  totalPrice:number = 0;
+  subTotalPrice:number = 0;
+  discount: number = 0;
   constructor(private categorypage: BooksService, private route: ActivatedRoute, private userService: UserService) {
     userService.userObservable.subscribe((newUser) => {
       this.user = newUser;
@@ -36,6 +39,7 @@ export class UserCartComponent implements OnInit {
         }else{
           this.books = BooksData;
           this.showMessage = false;
+          this.CalcTotalPrice()
         }
         
 
@@ -52,6 +56,14 @@ export class UserCartComponent implements OnInit {
         
       }
     });
+  }
+
+  CalcTotalPrice(){
+    for(let book of this.books){
+      this.subTotalPrice += book.price;
+      this.discount +=book.price * (book.discount / 100);
+      this.totalPrice += book.price * (1 - book.discount / 100);
+    }
   }
 
 }

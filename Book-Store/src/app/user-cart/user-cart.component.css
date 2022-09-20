@@ -1,0 +1,15 @@
+.item-price{
+    margin: 10px 0;
+    font-weight: normal;
+}
+.title{
+    font-weight: 500;
+}
+.originalPrice{
+    color: red;
+    font-weight: lighter;
+    font-size: 17px;
+}
+.total{
+    margin: 10px 0;
+}
