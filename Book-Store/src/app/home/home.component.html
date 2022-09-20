@@ -16,7 +16,7 @@
     <h1 class="jumbotron-heading section_title" style="margin-left:20px;"><a
         style="text-decoration: none; color:black; margin-bottom:10px;" routerLink="/most_selling">
         Best selling books</a></h1>
-    <div class="row">
+    <div class="row cards_row">
       <div class="card box-shadow p-0" style="width: 14rem;; margin-left:1px;" *ngFor="let book of bestSeller">
         <img class="card-img-top" src={{book.image}} alt="Card image cap" style="width:222px ; height:310px;">
         <div class="card-body d-flex flex-column">
@@ -33,7 +33,7 @@
   <div class="container" style=" margin-top:100px ;">
     <h1 class="jumbotron-heading section_title" style="margin-left:20px;"><a style="text-decoration: none; color:rgb(0, 0, 0)"
         routerLink="/hot">Discount</a></h1>
-    <div class="row">
+    <div class="row  cards_row">
       <div class="card box-shadow p-0" style="width:14rem; margin-left:1px;" *ngFor="let book of discount">
         <a [routerLink]="['/books/isbn', book.ISBN]">
           <img class="card-img-top" src={{book.image}} alt="Card image cap" style="width:222px ; height:310px;">
@@ -58,7 +58,7 @@
   <div class="container" style=" margin-top:100px ;">
     <h1 class="jumbotron-heading section_title" style="margin-left:20px;"><a style="text-decoration: none; color:black"
         routerLink="/category/novel">Novels</a></h1>
-    <div class="row">
+    <div class="row  cards_row">
       <div class="card box-shadow p-0" style="width:14rem; margin-left:1px;" *ngFor="let book of novels">
         <a [routerLink]="['/books/isbn', book.ISBN]">
           <img class="card-img-top" src={{book.image}} alt="Card image cap" style="width:222px ; height:310px;">
@@ -78,7 +78,7 @@
   <div class="container" style=" margin-top:100px ;">
     <h1 class="jumbotron-heading section_title" style="margin-left:20px;"><a style="text-decoration: none; color:black"
         routerLink="/category/Arts">Arts</a></h1>
-    <div class="row">
+    <div class="row  cards_row">
       <div class="card box-shadow p-0" style="width:14rem; margin-left:1px;" *ngFor="let book of arts">
         <a [routerLink]="['/books/isbn', book.ISBN]">
           <img class="card-img-top" src={{book.image}} alt="Card image cap" style="width:222px ; height:310px;">

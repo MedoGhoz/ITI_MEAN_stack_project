@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
 search:string="";
 book:Ibook[]=[];
 user!:User;
-cartCount!: number;
+cartCount: number = 0;
   constructor(private serv:BooksService,private activatedRoute:ActivatedRoute,private router :Router ,private userService:UserService) {
     activatedRoute.params.subscribe((params)=>{
       if(params.search){

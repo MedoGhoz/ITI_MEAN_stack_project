@@ -1,0 +1,19 @@
+.cart_btn{
+background-color: transparent;
+border-color: transparent;
+background-image: url('/assets/add_to_cart.png') ;
+background-repeat: no-repeat;
+background-size:contain;
+height: 38px;
+width: 38px;
+padding: 5px;
+}
+.cart_btn:hover{
+    background-color: transparent;
+    border: 0px transparent;
+}
+
+.badge{
+    top: 0.62rem;
+    left: 1.69rem;
+}

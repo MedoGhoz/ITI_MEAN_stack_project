@@ -42,11 +42,12 @@
       </li>
       <li>
         <div class="btn-nav" *ngIf="user.token">
-          <button type="button" class="btn btn-light position-relative">
-            <a href="/mycart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          <button type="button" class="btn btn-light position-relative cart_btn">
+             <a href="/mycart"><!--<i class="fa fa-cart-plus" aria-hidden="true"></i> -->
+            <span class="position-absolute translate-middle badge rounded-pill bg-danger">
               {{cartCount}}
             </span>
+          </a>
           </button>
         </div>
       </li>
