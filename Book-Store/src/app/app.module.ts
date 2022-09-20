@@ -20,6 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { UserBooksComponent } from './user-books/user-books.component';
 import { UserCartComponent } from './user-cart/user-cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import{NgxPaginationModule} from 'ngx-pagination'
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
     HttpClientModule,
     RatingModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
     ToastrModule.forRoot({
       timeOut:3000,
       positionClass:'toast-bottom-right',

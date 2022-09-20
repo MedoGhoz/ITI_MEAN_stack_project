@@ -34,6 +34,10 @@ export class BooksService {
   {
     return this.http.get(`http://localhost:4000/books`);
   }
+  getAllBooksLimit(limit:number,pageNumber:number): Observable <any>
+  {
+    return this.http.get(`http://localhost:4000/books/?${limit}&page=${pageNumber}`);
+  }
   getMostSellingBooks(): Observable <any>
   {
     return this.http.get(`http://localhost:4000/books/best-sellers`);
@@ -59,7 +63,7 @@ export class BooksService {
         this.toastrService.success(
           'Added to cart'
         )
-        
+
       }, error: (errorResponse) => {
         let errorMessage = '';
         if(errorResponse.error.error === 'access token is not valid'){
@@ -67,10 +71,10 @@ export class BooksService {
         }else{
           errorMessage = 'Cannot add to cart'
         }
-        
+
         this.toastrService.error(
           errorMessage)
-          
+
       }
     }))
   }
@@ -85,12 +89,12 @@ export class BooksService {
         this.toastrService.success(
           'rating added successfully'
         )
-        
+
       }, error: (errorResponse) => {
-        
+
         this.toastrService.error(
-          "cannot add rating already rated or not owned or signed in")
-          
+          "cannot add rating already rated or not owned")
+
       }
     }))
   }
@@ -111,9 +115,9 @@ export class BooksService {
     });
   }
 
-  
 
-  
+
+
 //  books/title/:title
   flipDetails(bookISBN: number) {
     this.Books.forEach((element: any) => {

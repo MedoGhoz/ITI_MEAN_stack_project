@@ -9,6 +9,7 @@ import { UserService } from '../user.service';
 
 
 
+
 @Component({
   selector: 'app-categorypage',
   templateUrl: './categorypage.component.html',
@@ -18,7 +19,8 @@ export class CategorypageComponent implements OnInit, OnChanges {
   categoryName!: string | null;
   Books!: Ibook[];
   FilteredBooks!: Ibook[];
-  currentPage!: number;
+  currentPage: number=1;
+  totalLength:number=0;
   user!: User;
   //showDescription:boolean=false;
 
@@ -35,34 +37,48 @@ export class CategorypageComponent implements OnInit, OnChanges {
         this.categorypage.getBooksByTitle(params.search).subscribe({
           next: (books) => {
             this.Books = books
+            this.totalLength=books.length
           }
         })
       } else if (route.snapshot.url[0].path === "most_selling") {
         this.categorypage.getMostSellingBooks().subscribe({
           next: (books) => {
             this.Books = books
+            this.totalLength=books.length
           }
         })
       }else if(route.snapshot.url[0].path === "hot"){
         this.categorypage.getDiscountBooks().subscribe({
           next: (books) => {
             this.Books = books
+            this.totalLength=books.length
           }
         })
 
-      } else if (route.snapshot.url[0].path === "mybooks") {
-        this.categorypage.showBooks(this.user.token).subscribe({
+      } else if (route.snapshot.url[0].path === "allBooks") {
+        this.categorypage.getAllBooks().subscribe({
           next: (books) => {
             this.Books = books
+            this.totalLength=books.length
+            this.Books.sort(function(a,b){
+                if(a.title>b.title){
+                  return -1;
+                }
+                if(a.title<b.title){
+                  return 1;
+                }
+                return 0;
+
+        })
           }
         })
         // console.log(route.snapshot.url[0].path);
-        
+
         // this.categorypage.showBooks(this.user.token).subscribe({
         //   next: (books) => {
         //     // this.Books = books
         //     console.log(books);
-            
+
         //   }
         // })
 
@@ -80,6 +96,8 @@ export class CategorypageComponent implements OnInit, OnChanges {
     this.categorypage.getCategory(this.categoryName, 8, this.currentPage).subscribe({
       next: (BooksData) => {
         this.Books = BooksData;
+        this.totalLength=BooksData.length
+        // this.totalLength=BooksData.length
         // this.FilteredBooks = this.Books.filter(
         //   (element)=>{
         //   if(element.category==this.categoryName) return element;

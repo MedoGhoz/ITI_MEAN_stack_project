@@ -1,2 +1,50 @@
+/* h4 {
+  color:brown;
+}
+h2{
+  color: red;
+}
+*/
+a{
+  text-decoration: none;
+}
+.btn-block{
+  margin: auto;
+  display: block;
+  width: 800px;
+}
+.card,
+h1 {
+  margin: 25px;
+}
+
+.row {
+  flex-direction: row;
+  justify-content: center;
+  background: #ffffff;
+
+}
+
+.categoryline {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 30px;
+  justify-content: center;
 
 
+
+}
+
+.categorylineBackground {
+  background: rgb(232, 232, 232);
+  padding-top: 1px;
+  padding-bottom: 1px;
+
+
+}
+
+.category {
+  font-style: italic;
+  font-size: 35px;
+
+
+}

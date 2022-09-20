@@ -211,11 +211,19 @@ app.post('/user/books', authenticateToken, async (req, resp) => {
     } else {
         let booksToReturn = [];
         for (let item of booksFromResult) {
+<<<<<<< HEAD
             let bookData = await book.findOne({ _id: item.bookId }, { title: 1, price: 1, image: 1 })
+=======
+            let bookData = await book.findOne({ _id: item.bookId }, { title: 1, price: 1, image: 1, discount: 1 })
+>>>>>>> 6f98fd6f4f4161c2272842b963463c0f94464960
             booksToReturn.push({
                 title: bookData.title,
                 image: bookData.image,
                 price: bookData.price,
+<<<<<<< HEAD
+=======
+                discount: bookData.discount,
+>>>>>>> 6f98fd6f4f4161c2272842b963463c0f94464960
                 datePurchased: item.datePurchased
             })
         }
@@ -270,6 +278,10 @@ app.post('/register', (req, resp, next) => {
             User.save()
                 .then(User => {
                     resp.json({
+<<<<<<< HEAD
+=======
+                        name: User.name,
+>>>>>>> 6f98fd6f4f4161c2272842b963463c0f94464960
                         message: "User saved successfully!"
                     })
                 })
