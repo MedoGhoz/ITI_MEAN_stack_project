@@ -93,7 +93,7 @@ export class CategorypageComponent implements OnInit, OnChanges {
 
   update(): void {
     this.categoryName = this.route.snapshot.paramMap.get("cat");
-    this.categorypage.getCategory(this.categoryName, 8, this.currentPage).subscribe({
+    this.categorypage.getCategory(this.categoryName, 10, this.currentPage).subscribe({
       next: (BooksData) => {
         this.Books = BooksData;
         this.totalLength=BooksData.length

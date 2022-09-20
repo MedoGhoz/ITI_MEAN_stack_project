@@ -8,6 +8,13 @@ h2{
 a{
   text-decoration: none;
 }
+.section_title{
+  font-size: 35px;
+  padding: 14px 5px 18px 5px;
+  border: #E5E4E2 solid;
+  border-radius: 5px;
+  background-color: #E5E4E2;
+}
 .btn-block{
   margin: auto;
   display: block;
@@ -47,4 +54,20 @@ h1 {
   font-size: 35px;
 
 
+}
+
+.title_link{
+  text-decoration: none;
+  color: #212429;
+  font-size: 10px;
+}
+.title_text{
+  display: inline-block;
+  word-wrap: break-word;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em;
+  font-size: 17px;
+  text-align: left;
 }

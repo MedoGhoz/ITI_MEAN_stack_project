@@ -1,16 +1,16 @@
 <br><br><br><br>
 <div class="row container" style="margin: auto;">
 
-  <div class="card" style="width: 18rem;" *ngFor="let book of Books | paginate: { itemsPerPage: 6, currentPage: currentPage, totalItems:totalLength }">
+  <div class="card p-0" style="width: 14rem;" *ngFor="let book of Books | paginate: { itemsPerPage: 8, currentPage: currentPage, totalItems:totalLength }">
     <a [routerLink]="['/books/isbn', book.ISBN]">
-      <img class="card-img-top" width="300px" height="300px" src={{book.image}} alt="Card image cap">
+      <img class="card-img-top" style="width:222px ; height:310px;" src={{book.image}} alt="Card image cap">
     </a>
     <div class="card-body">
-      <h5 class="card-title">{{book.title}}</h5>
+      <h6 class="card-title">{{book.title}}</h6>
       <!-- <app-star [width]='book.rating.average'></app-star> -->
       <star-rating [value]="book.rating.average" [totalstars]="5" checkedcolor="gold" uncheckedcolor="black"
-        [readonly]="true" size="30px"></star-rating>
-      <p>Price: {{book.price}} </p>
+        [readonly]="true" size="17px"></star-rating>
+      <b style="font-size: 17px;"> ${{book.price}} </b>
     </div>
   </div>
 </div>

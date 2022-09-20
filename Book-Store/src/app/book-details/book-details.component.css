@@ -42,7 +42,7 @@
 }
 
 .text {
-  display: inline-block;/* or inline-block */
+  display: inline-block;
   word-wrap: break-word;
   overflow:hidden;
   text-overflow: ellipsis;

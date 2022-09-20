@@ -1,5 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartBook } from 'CartBook';
 import { User } from 'User';
 import { BooksService } from '../books.service';
@@ -16,7 +17,7 @@ export class CheckoutComponent implements OnInit {
   showMessage!: boolean;
   totalPrice:number = 0;
   userCredit!: number;
-  constructor(private categorypage: BooksService, private route: ActivatedRoute, private userService: UserService) { 
+  constructor(private categorypage: BooksService, private route: ActivatedRoute,private router: Router, private userService: UserService) { 
     userService.userObservable.subscribe((newUser) => {
       this.user = newUser;
     })
@@ -65,6 +66,10 @@ export class CheckoutComponent implements OnInit {
         });
       }
     });
+    setTimeout(() => {
+      this.router.navigate(['/home'])
+    }, 200);
+   
   }
 
 }

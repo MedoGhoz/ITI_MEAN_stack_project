@@ -27,7 +27,7 @@ export class BooksService {
 
   getSpecialBooks(type:string): Observable <any>
   {
-    return this.http.get(`http://localhost:4000/books/${type}?limit=4&page=1`);
+    return this.http.get(`http://localhost:4000/books/${type}?limit=5&page=1`);
   }
 
   getAllBooks(): Observable <any>

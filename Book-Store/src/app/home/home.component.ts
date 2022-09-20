@@ -21,10 +21,10 @@ export class HomeComponent implements OnInit {
       this.bestSeller = data;
     }});
 
-    this.bookService.getCategory('Novels',4,1).subscribe({next:(data:any)=>{
+    this.bookService.getCategory('Novels',5,1).subscribe({next:(data:any)=>{
       this.novels = data;
     }});
-    this.bookService.getCategory('Arts',4,1).subscribe({next:(data:any)=>{
+    this.bookService.getCategory('Arts',5,1).subscribe({next:(data:any)=>{
       this.arts = data;
     }});
     this.bookService.getSpecialBooks('discount').subscribe({next:(data:any)=>{
